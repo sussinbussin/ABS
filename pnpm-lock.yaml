@@ -11,6 +11,7 @@ specifiers:
   '@vueuse/core': ^9.11.0
   eslint: ^8.32.0
   jsdom: ^21.0.0
+  onu-ui: 1.0.13-beta.1
   pnpm: ^7.25.1
   taze: ^0.8.5
   typescript: ^4.9.4
@@ -27,6 +28,7 @@ specifiers:
 
 dependencies:
   '@vueuse/core': 9.11.0_vue@3.2.45
+  onu-ui: 1.0.13-beta.1_vue@3.2.45
   vue: 3.2.45
   vue-router: 4.1.6_vue@3.2.45
 
@@ -653,6 +655,29 @@ packages:
       - bluebird
       - supports-color
     dev: true
+
+  /@onu-ui/components/1.0.13-beta.1_vue@3.2.45:
+    resolution: {integrity: sha512-aRcxoP3o9LbInTxvBaPQ+qAwya6z4hU79VNeV1eIdMZxp5+j8ucK/H3qHqB9oBHAvbzL+oGWsRVJ9XM78iAEjg==}
+    dependencies:
+      '@onu-ui/preset': 1.0.13-beta.1
+      '@onu-ui/utils': 1.0.13-beta.1_vue@3.2.45
+      '@vueuse/core': 9.11.0_vue@3.2.45
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
+  /@onu-ui/preset/1.0.13-beta.1:
+    resolution: {integrity: sha512-d3PEaVN7T+7YtyMChMjCkeI0dDfDbc5leV+ZfdVWMHjBwkwBBiZ3Jxsk0Zem/hBXZkVBHj21cqgBB5zoxSQwbg==}
+    dev: false
+
+  /@onu-ui/utils/1.0.13-beta.1_vue@3.2.45:
+    resolution: {integrity: sha512-L1IQWxlA/tZ9e0GYlzAXuuuTbGxzjlf+Momb5bFscka9X5EZlMcTmdK/tsyzxkVATZnz5qUS8Ictu74QnjgiDw==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      vue: 3.2.45
+    dev: false
 
   /@polka/url/1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
@@ -3896,6 +3921,15 @@ packages:
     dependencies:
       mimic-fn: 2.1.0
     dev: true
+
+  /onu-ui/1.0.13-beta.1_vue@3.2.45:
+    resolution: {integrity: sha512-59nle68+6WdCLG3HYSBz8jAbhjRhvvrN+C9skwVlsGYGYzAe0lPm3pub5de6T0KBEwoJ8qrrMW+YLDgYoilCBA==}
+    dependencies:
+      '@onu-ui/components': 1.0.13-beta.1_vue@3.2.45
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
 
   /optionator/0.8.3:
     resolution: {integrity: sha512-+IW9pACdk3XWmmTXG8m3upGUJst5XRGzxMRjXzAuJ1XnIFNvfhjjIuYkDvysnPQ7qzqVzLt78BCruntqRhWQbA==}
