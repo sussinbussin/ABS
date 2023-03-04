@@ -21,7 +21,7 @@ export default defineConfig({
     presetIcons({
       scale: 1.2,
       warn: true,
-      extraProperties: presetIconExtraProperties
+      extraProperties: presetIconExtraProperties,
     }),
     presetWebFonts({
       fonts: {

@@ -10,7 +10,7 @@ import 'uno.css'
 import 'anu-vue/dist/style.css'
 import '@anu-vue/preset-theme-default/dist/style.css'
 
-import pb from "./api/pocketbase"
+import pb from './api/pocketbase'
 import { pbSymbol } from './symbols/injectionSymbols'
 
 const app = createApp(App)

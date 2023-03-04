@@ -47,8 +47,8 @@ export default defineConfig({
     Components({
       dts: true,
       resolvers: [
-        AnuComponentResolver()
-      ]
+        AnuComponentResolver(),
+      ],
     }),
 
     // https://github.com/antfu/unocss
