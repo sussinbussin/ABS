@@ -24,7 +24,7 @@
     "@iconify-json/bx": "^1.1.6",
     "@iconify-json/carbon": "^1.1.13",
     "@types/node": "^18.11.18",
-    "@unocss/reset": "^0.48.4",
+    "@unocss/reset": "^0.41.2",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue-macros/volar": "^0.5.15",
     "@vue/test-utils": "^2.2.7",
