@@ -3,6 +3,8 @@
 
 <template>
   <div>
-    <h1>test</h1>
+    <h1>howdy</h1>
   </div>
 </template>
+
+<style scoped></style>

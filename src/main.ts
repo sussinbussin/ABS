@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import routes from 'virtual:generated-pages'
+import { MotionPlugin } from '@vueuse/motion'
 import App from './App.vue'
 
 import '@unocss/reset/tailwind.css'
@@ -23,5 +24,6 @@ const pinia = createPinia()
 
 app.use(router)
 app.use(pinia)
+app.use(MotionPlugin)
 app.provide(pbSymbol, pb)
 app.mount('#app')
