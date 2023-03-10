@@ -40,7 +40,6 @@ const isHovered = useElementHover(sidebarRef)
     class="h-screen w-250px dark:bg-hex-0a0a0a shadow-inset flex flex-col align-items-stretch bg-noise border-right p-2"
   >
     <div class="flex flex-row h-15">
-      <AAvatar :content="user?.name[0]" />
       <div class="text-left px-3">
         <h1 class="font-bold my-auto">
           {{ user?.name }}
