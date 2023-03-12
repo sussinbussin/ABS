@@ -4,9 +4,11 @@ import { useStorage } from '@vueuse/core'
 
 export const useUserStore = defineStore('user', () => {
   const user = ref(useStorage('user', {}))
+  const cca = ref(useStorage('cca', {}))
 
   const clear = () => {
     user.value = {}
+    cca.value = {}
   }
-  return { user, clear }
+  return { user, cca, clear }
 })

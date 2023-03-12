@@ -14,6 +14,7 @@ declare module '@vue/runtime-core' {
     ADataTable: typeof import('anu-vue')['ADataTable']
     AInput: typeof import('anu-vue')['AInput']
     ATable: typeof import('anu-vue')['ATable']
+    EventScreen: typeof import('./src/components/EventScreen.vue')['default']
     InventoryTable: typeof import('./src/components/InventoryTable.vue')['default']
     LoginForm: typeof import('./src/components/LoginForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

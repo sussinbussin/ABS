@@ -2,9 +2,9 @@
 </script>
 
 <template>
-  <div>
+  <div class="block h-screen overflow-scroll">
     <Suspense>
-      <InventoryTable class="block h-screen overflow-scroll"/>
+      <InventoryTable/>
     </Suspense>
   </div>
 </template>

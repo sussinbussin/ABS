@@ -9,7 +9,7 @@ const sidebarRef = ref<HTMLElement>()
 const route = useRoute()
 const router = useRouter()
 
-const { user } = useUserStore()
+const { user, cca } = useUserStore()
 
 // Pin logic
 const pinned = ref(true)
@@ -35,22 +35,23 @@ const isHovered = useElementHover(sidebarRef)
 </script>
 
 <template>
-  <div
-    ref="sidebarRef" v-motion-slide-left
-    class="h-screen w-250px dark:bg-hex-0a0a0a shadow-inset flex flex-col align-items-stretch bg-noise border-right p-2"
-  >
+  <div ref="sidebarRef" v-motion-slide-left
+    class="h-screen w-250px dark:bg-hex-0a0a0a shadow-inset flex flex-col align-items-stretch bg-noise border-right p-2">
     <div class="flex flex-row h-15">
       <div class="text-left px-3">
         <h1 class="font-bold my-auto">
           {{ user?.name }}
         </h1>
-        <p class="text-xs font-bold my-auto">
-          Whitehats Society
-        </p>
+          <p class="text-xs font-bold my-auto">
+            {{ cca?.name }}
+          </p>
       </div>
     </div>
-    <ABtn icon="i-bx-package" variant="light" onclick="location.href='/inventory';">
+    <ABtn icon="i-bx-package" variant="light" onclick="location.href='/inventory';" class="mt">
       Inventory
+    </ABtn>
+    <ABtn icon="i-bx-package" variant="light" onclick="location.href='/events';" class="mt">
+      Events
     </ABtn>
     <div class="mt-auto flex flex-row">
       <ABtn icon-only icon="i-bx-cog" variant="light" />

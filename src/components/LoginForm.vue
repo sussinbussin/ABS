@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Collection } from 'pocketbase';
 import { inject, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '~/stores/user'
@@ -19,13 +20,26 @@ const login = async () => {
 
     if (res) {
       userStore.user = res.record
+
       // get rest of the details
+      const udres = await pb?.collection('userDetails').getList(1, 50, {
+        filter: 'userid = "' + userStore.user.id + '"',
+      });
+
+      const ccares = await pb?.collection('cca').getList(1, 500, {
+        filter: 'id="' + udres?.items[0].ccaId + '"',
+      });
+
+      if (ccares?.items[0]) {
+        userStore.cca = ccares?.items[0]
+      }
 
       router.push('/')
     }
   }
   catch (err) {
     // TODO: toast
+    console.log(err)
   }
 }
 </script>
