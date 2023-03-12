@@ -3,7 +3,7 @@ import { pbSymbol } from '~/symbols/injectionSymbols'
 const pb = inject(pbSymbol)
 
 // fetch a paginated records list
-const res = await pb?.collection('inventory').getList(1, 50, {
+const res = await pb?.collection('inventory').getList(1, 500, {
   filter: 'cca.id="pnsvpxuk97kb5bs"',
 })
 
@@ -23,7 +23,7 @@ const cols = [
 </script>
 
 <template>
-  <ADataTable :cols="cols" :rows="items" search>
+  <ADataTable :cols="cols" :rows="items" search multiSort :page-size="500">
     <template #col-actions>
       <div class="flex">
         <ABtn class="text-xs" icon="i-bx-link-external" icon-only color="default" variant="text" />

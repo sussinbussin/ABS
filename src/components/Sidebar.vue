@@ -49,7 +49,7 @@ const isHovered = useElementHover(sidebarRef)
         </p>
       </div>
     </div>
-    <ABtn icon="i-bx-package" variant="light">
+    <ABtn icon="i-bx-package" variant="light" onclick="location.href='/inventory';">
       Inventory
     </ABtn>
     <div class="mt-auto flex flex-row">

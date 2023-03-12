@@ -4,8 +4,5 @@
 <template>
   <div>
     <h1>test</h1>
-    <Suspense>
-      <InventoryTable />
-    </Suspense>
   </div>
 </template>

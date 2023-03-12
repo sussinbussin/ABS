@@ -3,7 +3,9 @@
 
 <template>
   <div>
-    <h1>howdy</h1>
+    <Suspense>
+      <InventoryTable class="block h-screen overflow-scroll"/>
+    </Suspense>
   </div>
 </template>
 
