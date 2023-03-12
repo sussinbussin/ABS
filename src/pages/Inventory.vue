@@ -4,7 +4,7 @@
 <template>
   <div class="block h-screen overflow-scroll">
     <Suspense>
-      <InventoryTable/>
+      <InventoryTable />
     </Suspense>
   </div>
 </template>

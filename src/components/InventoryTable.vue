@@ -6,12 +6,12 @@ const pb = inject(pbSymbol)
 const userStore = useUserStore()
 
 const ccares = await pb?.collection('userDetails').getList(1, 50, {
-    filter: 'userid = "' + userStore.user.id +'"',
-});
+  filter: `userid = "${userStore.user.id}"`,
+})
 
 // fetch a paginated records list
 const res = await pb?.collection('inventory').getList(1, 500, {
-  filter: 'cca.id="'+ ccares?.items[0].ccaId +'"',
+  filter: `cca.id="${ccares?.items[0].ccaId}"`,
 })
 
 const items: { id: string; name: any; qty: any }[] = []
@@ -30,7 +30,7 @@ const cols = [
 </script>
 
 <template>
-  <ADataTable :cols="cols" :rows="items" search multiSort :page-size="500">
+  <ADataTable :cols="cols" :rows="items" search multi-sort :page-size="500">
     <template #col-actions>
       <div class="flex">
         <ABtn class="text-xs" icon="i-bx-link-external" icon-only color="default" variant="text" />

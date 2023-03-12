@@ -3,7 +3,7 @@
 
 <template>
   <Suspense>
-    <EventScreen/>
+    <EventScreen />
   </Suspense>
 </template>
 
