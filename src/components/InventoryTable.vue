@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { pbSymbol } from '~/symbols/injectionSymbols'
+import { useUserStore } from '~/stores/user'
+
 const pb = inject(pbSymbol)
+const userStore = useUserStore()
+
+const ccares = await pb?.collection('userDetails').getList(1, 50, {
+    filter: 'userid = "' + userStore.user.id +'"',
+});
 
 // fetch a paginated records list
 const res = await pb?.collection('inventory').getList(1, 500, {
-  filter: 'cca.id="pnsvpxuk97kb5bs"',
+  filter: 'cca.id="'+ ccares?.items[0].ccaId +'"',
 })
 
 const items: { id: string; name: any; qty: any }[] = []
