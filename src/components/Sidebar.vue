@@ -49,9 +49,6 @@ const isHovered = useElementHover(sidebarRef)
     <ABtn icon="i-bx-package" variant="light" onclick="location.href='/events';" class="mt">
       Events
     </ABtn>
-    <ABtn icon="i-bx-package" variant="light" onclick="location.href='/inventory';" class="mt">
-      Product Disposal
-    </ABtn>
     <div class="mt-auto flex flex-row">
       <ABtn icon-only icon="i-bx-cog" variant="light" />
       <ABtn icon-only icon="i-bx-pin" class="ml-auto" :variant="getPinnedVariant" :onclick="changePin" />
