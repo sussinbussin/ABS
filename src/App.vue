@@ -6,7 +6,7 @@ const route = useRoute()
 const showSidebar = ref(false)
 
 watchEffect(() => {
-  if (route.name == "login") {
+  if (route.name == "Login") {
     showSidebar.value = false
   } else {
     showSidebar.value = true
