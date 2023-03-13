@@ -15,12 +15,19 @@ import pb from './api/pocketbase'
 import { pbSymbol } from './symbols/injectionSymbols'
 
 const app = createApp(App)
+const pinia = createPinia()
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
 
-const pinia = createPinia()
+router.beforeEach((to, from) => {
+  if (to.name != "Login" && localStorage.getItem("user") == "{}") {
+    return { name: "Login" }
+  }
+})
+
 
 app.use(router)
 app.use(pinia)
