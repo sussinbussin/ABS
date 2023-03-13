@@ -14,11 +14,12 @@ const res = await pb?.collection('inventory').getList(1, 500, {
   filter: `cca.id="${ccares?.items[0].ccaId}"`,
 })
 
-const items: { id: string; name: any; qty: any }[] = []
+const items: { id: number; name: any; qty: any }[] = []
 
+//TODO: clean up code idt its at the right spot
 if (res) {
   const raw = res.items
-  raw.forEach(x => items.push({ id: x.id, name: x.name, qty: x.qty }))
+  raw.forEach((x, idx) => items.push({ id: idx + 1, name: x.name, qty: x.qty }))
 }
 
 const cols = [
