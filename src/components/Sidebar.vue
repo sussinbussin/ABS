@@ -2,8 +2,10 @@
 import { computed, onMounted, ref, watchEffect } from 'vue'
 import { useElementHover, useStorage } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
-import { useMotion } from '@vueuse/motion'
+import { useMotion, useMotions } from '@vueuse/motion'
 import { useUserStore } from '~/stores/user'
+
+const { sideBarCollaspe } = useMotions()
 
 const sidebarRef = ref<HTMLElement>()
 const route = useRoute()
@@ -11,6 +13,7 @@ const router = useRouter()
 
 const { user, cca } = useUserStore()
 
+const current = ref('')
 // Pin logic
 const pinned = ref(true)
 
@@ -24,6 +27,13 @@ const getPinnedVariant = computed(() => {
   return 'text'
 })
 
+const navigateInventory = () => {
+  router.push('inventory')
+}
+
+const navigateEvents = () => {
+  router.push('events')
+}
 // collaspe sidebar logic
 const isHovered = useElementHover(sidebarRef)
 </script>
@@ -43,10 +53,10 @@ const isHovered = useElementHover(sidebarRef)
         </p>
       </div>
     </div>
-    <ABtn icon="i-bx-package" variant="light" onclick="location.href='/inventory';" class="mt">
+    <ABtn icon="i-bx-package" :variant="route.name === 'Inventory' ? 'fill' : 'light'" @click="navigateInventory">
       Inventory
     </ABtn>
-    <ABtn icon="i-bx-package" variant="light" onclick="location.href='/events';" class="mt">
+    <ABtn icon="i-bx-package" :variant="route.name === 'Events' ? 'fill' : 'light'" class="mt" @click="navigateEvents">
       Events
     </ABtn>
     <div class="mt-auto flex flex-row">

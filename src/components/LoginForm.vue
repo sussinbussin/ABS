@@ -38,7 +38,6 @@ const login = async () => {
   }
   catch (err) {
     // TODO: toast
-    console.log(err)
   }
 }
 </script>
