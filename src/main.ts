@@ -22,8 +22,8 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from) => {
-  if (to.name != 'Login' && localStorage.getItem('user') == '{}')
+router.beforeEach((to) => {
+  if (to.name !== 'Login' && localStorage.getItem('user') === '{}')
     return { name: 'Login' }
 })
 

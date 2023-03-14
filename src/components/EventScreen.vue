@@ -17,10 +17,7 @@ const eventres = await pb?.collection('events').getList(1, 500, {
 <template>
   <div class="h-screen overflow-scroll ma">
     <div class="grid-row md:grid-cols-3">
-      <ACard
-        v-for="event in eventres?.items" :title="event.event_name" :subtitle="event.when"
-        :text="event.description" class="w-xs justify-between"
-      />
+      <ACard v-for="event in eventres?.items" :key="event.id" :title="event.event_name" :subtitle="event.when" />
     </div>
   </div>
 </template>

@@ -13,7 +13,7 @@ const router = useRouter()
 
 const { user, cca } = useUserStore()
 
-const current = ref("")
+const current = ref('')
 // Pin logic
 const pinned = ref(true)
 
@@ -27,18 +27,15 @@ const getPinnedVariant = computed(() => {
   return 'text'
 })
 
-
 const navigateInventory = () => {
-  router.push("inventory")
+  router.push('inventory')
 }
 
 const navigateEvents = () => {
-  router.push("events")
+  router.push('events')
 }
 // collaspe sidebar logic
 const isHovered = useElementHover(sidebarRef)
-
-
 </script>
 
 <template v-if="display">
@@ -56,11 +53,10 @@ const isHovered = useElementHover(sidebarRef)
         </p>
       </div>
     </div>
-    <ABtn icon="i-bx-package" :variant="route.name == 'Inventory' ? 'fill' : 'light'" @click="navigateInventory"
-      class="mt">
+    <ABtn icon="i-bx-package" :variant="route.name === 'Inventory' ? 'fill' : 'light'" @click="navigateInventory">
       Inventory
     </ABtn>
-    <ABtn icon="i-bx-package" :variant="route.name == 'Events' ? 'fill' : 'light'" @click="navigateEvents" class="mt">
+    <ABtn icon="i-bx-package" :variant="route.name === 'Events' ? 'fill' : 'light'" class="mt" @click="navigateEvents">
       Events
     </ABtn>
     <div class="mt-auto flex flex-row">
