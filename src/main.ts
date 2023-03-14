@@ -23,11 +23,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  if (to.name != "Login" && localStorage.getItem("user") == "{}") {
-    return { name: "Login" }
-  }
+  if (to.name != 'Login' && localStorage.getItem('user') == '{}')
+    return { name: 'Login' }
 })
-
 
 app.use(router)
 app.use(pinia)

@@ -4,7 +4,7 @@
 <template>
   <div class="block h-screen overflow-scroll relative">
     <Suspense>
-      <InventoryTable />
+      <AddProductScreen />
     </Suspense>
   </div>
 </template>

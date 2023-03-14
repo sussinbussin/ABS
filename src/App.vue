@@ -6,13 +6,13 @@ const route = useRoute()
 const showSidebar = ref(false)
 
 watchEffect(() => {
-  if (route.name == "Login") {
+  if (route.name == 'Login')
     showSidebar.value = false
-  } else {
+  else
     showSidebar.value = true
-  }
 })
 </script>
+
 <template>
   <main font-sans text="center gray-700 dark:gray-200">
     <div class="flex flex-row">
