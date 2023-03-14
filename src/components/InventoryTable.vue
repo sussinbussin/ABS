@@ -32,10 +32,12 @@ const cols = [
 
 <template>
   <div>
-    <ABtn icon="i-bx-plus" variant="outline" onclick="location.href='/addProducts';" class="mt-5 float-left absolute left-9">
+    <ABtn icon="i-bx-plus" variant="outline" onclick="location.href='/addProducts';"
+      class="mt-5 float-left absolute left-9">
       Add Products
     </ABtn>
-    <ADataTable :cols="cols" :rows="items" search multi-sort :page-size="500">
+
+    <ADataTable :cols="cols" :rows="items" search multi-sort :page-size="10" v-motion-pop>
       <template #col-actions>
         <div class="flex">
           <ABtn class="text-xs" icon="i-bx-link-external" icon-only color="default" variant="text" />

@@ -2,8 +2,10 @@
 import { computed, onMounted, ref, watchEffect } from 'vue'
 import { useElementHover, useStorage } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
-import { useMotion } from '@vueuse/motion'
+import { useMotion, useMotions } from '@vueuse/motion'
 import { useUserStore } from '~/stores/user'
+
+const { sideBarCollaspe } = useMotions()
 
 const sidebarRef = ref<HTMLElement>()
 const route = useRoute()
@@ -35,6 +37,8 @@ const navigateEvents = () => {
 }
 // collaspe sidebar logic
 const isHovered = useElementHover(sidebarRef)
+
+
 </script>
 
 <template v-if="display">
