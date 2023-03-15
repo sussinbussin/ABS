@@ -32,14 +32,7 @@ const cols = [
 
 <template>
   <div>
-    <ABtn
-      icon="i-bx-plus" variant="outline" onclick="location.href='/addProducts';"
-      class="mt-5 float-left absolute left-9"
-    >
-      Add Products
-    </ABtn>
-
-    <ADataTable v-motion-pop :cols="cols" :rows="items" search multi-sort :page-size="10">
+    <ADataTable v-motion-pop :cols="cols" :rows="items" search multi-sort :page-size="50">
       <template #col-actions>
         <div class="flex">
           <ABtn class="text-xs" icon="i-bx-link-external" icon-only color="default" variant="text" />
@@ -47,7 +40,7 @@ const cols = [
           <ABtn class="text-xs" icon="i-bx-trash" icon-only variant="text" color="default" />
         </div>
       </template>
-    </ADataTable>
+    </ADataTable> 
   </div>
 </template>
 

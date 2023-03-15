@@ -8,7 +8,7 @@ const userStore = useUserStore()
 
 <template>
   <div class="grid-row sm:grid-cols-2 place-items-stretch w-xl">
-    <AInput label="Email" type="email" value="user@domain.com" />
+    <AInput label="Item Name" value="Enter item name" />
 
     <!-- 👉 Custom label -->
     <AInput id="form-x" value="user@domain.com" type="email">
