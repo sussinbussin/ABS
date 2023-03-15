@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AAlert: typeof import('anu-vue')['AAlert']
     AAvata: typeof import('anu-vue')['AAvata']
     AAvatar: typeof import('anu-vue')['AAvatar']
     ABtn: typeof import('anu-vue')['ABtn']
