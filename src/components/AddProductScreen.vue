@@ -46,7 +46,7 @@ const submitAddItem = async () => {
   <h1 class="font-bold text-xl p-5 text-left">
     Add Product
   </h1>
-  <form @submit.prevent="submitAddItem">
+  <form @submit.prevent="submitAddItem" class="p-5">
     <ACard v-motion-pop class="w-2xl p-5">
       <div class="grid-row sm:grid-cols-2 place-items-stretch">
         <!-- 👉 Custom label -->
@@ -71,11 +71,11 @@ const submitAddItem = async () => {
         <AInput v-on:change="handleFiles" inputClasses="a-input-form-x-image" value="Upload item image" type="file" ref="imgUpload"/>
       </div>
 
-      <AAlert color="success" class="mt" dismissible v-model=successModel>
+      <AAlert v-motion-pop color="success" class="mt" dismissible v-model=successModel>
         Item added
       </AAlert>
 
-      <AAlert color="danger" class="mt" dismissible v-model=failModel>
+      <AAlert v-motion-pop color="danger" class="mt" dismissible v-model=failModel>
         Failed to add item
       </AAlert>
 

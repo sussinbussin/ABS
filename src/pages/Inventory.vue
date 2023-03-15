@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 </script>
 
 <template>
@@ -6,11 +7,10 @@
     <h1 class="font-bold text-xl p-5 text-left">
       My Inventory
     </h1>
-    <ABtn icon="i-bx-plus" variant="outline" onclick="location.href='/addProducts';" class="mt-5 left-5 float-left z-2 absolute">
-      Add Products
-    </ABtn>
     <Suspense>
-      <InventoryTable />
+      <Transition>
+        <InventoryTable />
+      </Transition>
     </Suspense>
   </div>
 </template>
