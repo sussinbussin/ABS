@@ -7,7 +7,7 @@
       My Inventory
     </h1>
     <Suspense>
-      <InventoryTable class="m-5 overflow-scroll" />
+      <InventoryTable class="m-5" />
     </Suspense>
   </div>
 </template>

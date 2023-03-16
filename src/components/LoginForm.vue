@@ -1,43 +1,68 @@
 <script setup lang="ts">
-import { Collection } from 'pocketbase'
-import { inject, ref } from 'vue'
+import { inject, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '~/stores/user'
 import { pbSymbol } from '~/symbols/injectionSymbols'
+import { useToast } from 'vue-toast-notification'
 
 const router = useRouter()
+
+const toast = useToast();
 
 const pb = inject(pbSymbol)
 
 const username = ref('')
 const password = ref('')
 
+//TODO: add spinner
+const buttonText = ref('Login')
+
 const userStore = useUserStore()
 
+
+//delete all credentials when visiting login.
+onMounted(() => {
+  userStore.clear()
+  localStorage.removeItem("pocketbase_auth")
+})
+
 const login = async () => {
+  buttonText.value = "Logging in.."
   try {
     const res = await pb?.collection('users').authWithPassword(username.value, password.value)
 
+    //TODO: add password wrong
     if (res) {
+      buttonText.value = "Logged In! Retreving Data.."
+
       userStore.user = res.record
 
       // get rest of the details
-      const udres = await pb?.collection('userDetails').getList(1, 50, {
+      const udRes = await pb?.collection('userDetails').getList(1, 50, {
         filter: `userid = "${userStore.user.id}"`,
       })
+      //TODO: wrong implementation of api
+      const ccaRes = await pb?.collection('cca').getList(1, 500, {
+        filter: `id="${udRes?.items[0].ccaId}"`,
+      })
+      if (ccaRes?.items[0])
+        userStore.cca = ccaRes?.items[0]
 
-      const ccares = await pb?.collection('cca').getList(1, 500, {
-        filter: `id="${udres?.items[0].ccaId}"`,
+      const inventoryRes = await pb?.collection('inventory').getFullList(500, {
+        filter: `cca.id="${userStore.cca.id}"`,
       })
 
-      if (ccares?.items[0])
-        userStore.cca = ccares?.items[0]
+      userStore.inventory = inventoryRes
 
       router.push('/')
     }
   }
   catch (err) {
-    // TODO: toast
+    toast.open({
+      type: "error",
+      message: "Invalid username or password!",
+      position: "bottom"
+    })
   }
 }
 </script>
@@ -47,7 +72,7 @@ const login = async () => {
     <form class="grid-row place-items-stretch" @submit.prevent="login">
       <AInput v-model="username" placeholder=" Username" type="text" prepend-inner-icon="i-bx-user" class="text-sm" />
       <AInput v-model="password" placeholder="Password" type="password" prepend-inner-icon="i-bx-lock" class="text-sm" />
-      <ABtn>Login</ABtn>
+      <ABtn>{{ buttonText }}</ABtn>
     </form>
   </ACard>
 </template>

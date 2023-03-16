@@ -11,6 +11,8 @@ import 'uno.css'
 import 'anu-vue/dist/style.css'
 import '@anu-vue/preset-theme-default/dist/style.css'
 
+import ToastPlugin from 'vue-toast-notification'
+
 import pb from './api/pocketbase'
 import { pbSymbol } from './symbols/injectionSymbols'
 
@@ -30,5 +32,6 @@ router.beforeEach((to) => {
 app.use(router)
 app.use(pinia)
 app.use(MotionPlugin)
+app.use(ToastPlugin)
 app.provide(pbSymbol, pb)
 app.mount('#app')

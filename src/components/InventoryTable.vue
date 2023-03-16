@@ -1,29 +1,33 @@
 <script setup lang="ts">
 import { pbSymbol } from '~/symbols/injectionSymbols'
 import { useUserStore } from '~/stores/user'
+import { onMounted, reactive } from 'vue';
 
 const pb = inject(pbSymbol)
 const userStore = useUserStore()
 
-const ccares = await pb?.collection('userDetails').getList(1, 50, {
-  filter: `userid = "${userStore.user.id}"`,
+//Retrieve inventory should it not exist
+onMounted(async () => {
+  // const ccares = await pb?.collection('userDetails').getList(1, 50, {
+  //   filter: `userid = "${userStore.user.id}"`,
+  // })
+  //
+  // // fetch a paginated records list
+  // const res = await pb?.collection('inventory').getList(1, 500, {
+  //   filter: `cca.id="${ccares?.items[0].ccaId}"`,
+  // })
+  // if (res) {
+  //   const raw = res.items
+  //   //TODO: improve this 
+  //   // const items: { id: number; name: any; qty: any }[] = []
+  //   raw.forEach((x, idx) => table.push({ id: idx + 1, name: x.name, qty: x.qty }))
+  // }
+
+
 })
-
-// fetch a paginated records list
-const res = await pb?.collection('inventory').getList(1, 500, {
-  filter: `cca.id="${ccares?.items[0].ccaId}"`,
-})
-
-const items: { id: number; name: any; qty: any }[] = []
-
-// TODO: clean up code idt its at the right spot
-if (res) {
-  const raw = res.items
-  raw.forEach((x, idx) => items.push({ id: idx + 1, name: x.name, qty: x.qty }))
-}
 
 const cols = [
-  { name: 'id', isFilterable: true },
+  //{ name: 'id', isFilterable: true },
   { name: 'name', isFilterable: true },
   { name: 'qty', isFilterable: true },
   { name: 'actions', isFilterable: false },
@@ -32,14 +36,14 @@ const cols = [
 
 <template>
   <div>
-    <ABtn
-      icon="i-bx-plus" variant="outline" onclick="location.href='/addProducts';"
-      class="mt-5 float-left absolute left-9"
-    >
-      Add Products
-    </ABtn>
+    <!-- ABtn -->
+    <!--   icon="i-bx-plus" variant="outline" onclick="location.href='/addProducts';" -->
+    <!--   class="mt-5 float-left absolute left-9" -->
+    <!-- > -->
+    <!--   Add Products -->
+    <!--Btn -->
 
-    <ADataTable v-motion-pop :cols="cols" :rows="items" search multi-sort :page-size="10">
+    <ADataTable v-motion-pop :cols="cols" :rows="userStore.inventory" search multi-sort :page-size="10">
       <template #col-actions>
         <div class="flex">
           <ABtn class="text-xs" icon="i-bx-link-external" icon-only color="default" variant="text" />
