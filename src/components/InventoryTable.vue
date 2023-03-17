@@ -6,7 +6,7 @@ import { onMounted, reactive } from 'vue';
 const pb = inject(pbSymbol)
 const userStore = useUserStore()
 
-//Retrieve inventory should it not exist
+//TODO: Retrieve inventory should it not exist
 onMounted(async () => {
   // const ccares = await pb?.collection('userDetails').getList(1, 50, {
   //   filter: `userid = "${userStore.user.id}"`,

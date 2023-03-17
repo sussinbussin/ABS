@@ -26,13 +26,21 @@ onMounted(() => {
   localStorage.removeItem("pocketbase_auth")
 })
 
+const throwError = (message: string) => {
+  toast.open({
+    type: "error",
+    message: message,
+    position: "bottom"
+  })
+
+}
 const login = async () => {
   buttonText.value = "Logging in.."
   try {
     const res = await pb?.collection('users').authWithPassword(username.value, password.value)
 
     //TODO: add password wrong
-    if (res) {
+    if (res.record) {
       buttonText.value = "Logged In! Retreving Data.."
 
       userStore.user = res.record
@@ -58,11 +66,10 @@ const login = async () => {
     }
   }
   catch (err) {
-    toast.open({
-      type: "error",
-      message: "Invalid username or password!",
-      position: "bottom"
-    })
+    throwError("Invalid username or password")
+    buttonText.value = "Login"
+    username.value = ""
+    password.value = ""
   }
 }
 </script>
@@ -70,7 +77,7 @@ const login = async () => {
 <template>
   <ACard v-motion-pop title="ABS" class="px-5 pb-6">
     <form class="grid-row place-items-stretch" @submit.prevent="login">
-      <AInput v-model="username" placeholder=" Username" type="text" prepend-inner-icon="i-bx-user" class="text-sm" />
+      <AInput v-model="username" placeholder="Username" type="text" prepend-inner-icon="i-bx-user" class="text-sm" />
       <AInput v-model="password" placeholder="Password" type="password" prepend-inner-icon="i-bx-lock" class="text-sm" />
       <ABtn>{{ buttonText }}</ABtn>
     </form>

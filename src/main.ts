@@ -12,6 +12,7 @@ import 'anu-vue/dist/style.css'
 import '@anu-vue/preset-theme-default/dist/style.css'
 
 import ToastPlugin from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-bootstrap.css';
 
 import pb from './api/pocketbase'
 import { pbSymbol } from './symbols/injectionSymbols'
