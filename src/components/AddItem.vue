@@ -5,6 +5,7 @@ import { useUserStore } from '~/stores/user'
 import { pbSymbol } from '~/symbols/injectionSymbols'
 
 import { useToast } from 'vue-toast-notification'
+import { error } from 'console'
 
 const emit = defineEmits(['done'])
 const pb = inject(pbSymbol)
@@ -15,14 +16,33 @@ const toast = useToast();
 const name = ref("")
 const qty = ref(0)
 
-
 const submit = async () => {
-  const res = await pb?.collection('inventory').create({
-    name: name.value,
-    qty: qty.value,
-    cca: userStore.cca.id
-  })
+  try {
+    if (name.value == "") {
+      throw new Error("Name should not be empty")
+    } else if (qty.value <= 0) {
+      throw new Error("Value should not be less than or equal 0")
+    }
 
+    const res = await pb?.collection('inventory').create({
+      name: name.value,
+      qty: qty.value,
+      cca: userStore.cca.id
+    })
+    toast.open({
+      type: "success",
+      message: "Item Added!",
+      position: "bottom"
+    })
+
+  } catch (err) {
+    toast.open({
+      type: "error",
+      message: `${err}`,
+      position: "bottom"
+    })
+
+  }
 
   const inventoryRes = await pb?.collection('inventory').getFullList(500, {
     filter: `cca.id="${userStore.cca.id}"`,
@@ -30,12 +50,8 @@ const submit = async () => {
 
   userStore.inventory = inventoryRes
 
-  toast.open({
-    type: "success",
-    message: "Item Added!",
-    position: "bottom"
-  })
   emit("done")
+
 }
 </script>
 
