@@ -18,7 +18,7 @@ const nameEmpty = ref(true)
 const qtyEmpty = ref(true)
 
 const nameEmptyMsg = computed(() => {
-  if (name.value) {
+  if (name.value && name.value.trim()) {
     nameEmpty.value = false
     return ""
   } else {
