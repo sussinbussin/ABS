@@ -14,31 +14,31 @@ const toast = useToast();
 //TODO: add based on fields
 const name = ref("")
 const qty = ref(0)
-const nameError = ref(true)
-const qtyError = ref(true)
+const nameEmpty = ref(true)
+const qtyEmpty = ref(true)
 
-const nameValid = computed(() => {
+const nameEmptyMsg = computed(() => {
   if (name.value) {
-    nameError.value = false
+    nameEmpty.value = false
     return ""
   } else {
-    nameError.value = true
+    nameEmpty.value = true
     return "Name cannot be empty!"
   }
 })
 
-const qtyValid = computed(() => {
+const qtyEmptyMsg = computed(() => {
   if (qty.value > 0) {
-    qtyError.value = false
+    qtyEmpty.value = false
     return ""
   } else {
-    qtyError.value = true
+    qtyEmpty.value = true
     return "Quantity must be more than 0!"
   }
 })
 
 const submit = async () => {
-  if (!nameError.value && !qtyError.value) {
+  if (!nameEmpty.value && !qtyEmpty.value) {
     try {
       const res = await pb?.collection('inventory').create({
         name: name.value,
@@ -77,8 +77,8 @@ const submit = async () => {
 <template>
   <ACard title="Add Item" class="px-5 pb-6">
     <form class="grid-row place-items-stretch" @submit.prevent="submit">
-      <AInput v-model="name" :error="nameValid" placeholder="name" type="text" class-text-sm />
-      <AInput v-model="qty" :error="qtyValid" placeholder="qty" type="number" class-text-sm />
+      <AInput v-model="name" :error="nameEmptyMsg" placeholder="name" type="text" class-text-sm />
+      <AInput v-model="qty" :error="qtyEmptyMsg" placeholder="qty" type="number" class-text-sm />
       <ABtn>Submit</ABtn>
     </form>
   </ACard>
