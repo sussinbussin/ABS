@@ -5,17 +5,15 @@ const showDialog = ref(false)
 </script>
 
 <template>
-  <div class="block h-screen">
+  <div class="flex flex-col h-screen">
     <h1 class="font-bold text-xl p-5 text-left">
       My Inventory
     </h1>
-    <Suspense>
-      <InventoryTable class="m-5" />
+    <Suspense class="flex-grow">
+      <InventoryTable />
     </Suspense>
-    <div class="flex flex-row p-3">
-      <ABtn icon="i-bx-plus" class="ml-auto mr-1" @click="showDialog = true">
-        Add Item
-      </ABtn>
+    <div class="flex flex-row p-3 mb-auto">
+      <ABtn icon='i-bx-plus' class="ml-auto mr-1" @click="showDialog = true">Add Item</ABtn>
     </div>
     <ADialog v-model="showDialog">
       <AddItem :show-dialog="showDialog" @done="showDialog = false" />
