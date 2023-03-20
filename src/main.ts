@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import routes from 'virtual:generated-pages'
 import { MotionPlugin } from '@vueuse/motion'
+import ToastPlugin from 'vue-toast-notification'
 import App from './App.vue'
 
 import '@unocss/reset/tailwind.css'
@@ -11,8 +12,7 @@ import 'uno.css'
 import 'anu-vue/dist/style.css'
 import '@anu-vue/preset-theme-default/dist/style.css'
 
-import ToastPlugin from 'vue-toast-notification'
-import 'vue-toast-notification/dist/theme-bootstrap.css';
+import 'vue-toast-notification/dist/theme-bootstrap.css'
 
 import pb from './api/pocketbase'
 import { pbSymbol } from './symbols/injectionSymbols'

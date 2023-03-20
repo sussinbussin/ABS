@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 
 const showDialog = ref(false)
-
 </script>
 
 <template>
@@ -14,10 +13,12 @@ const showDialog = ref(false)
       <InventoryTable class="m-5" />
     </Suspense>
     <div class="flex flex-row p-3">
-      <ABtn icon='i-bx-plus' class="ml-auto mr-1" @click="showDialog = true">Add Item</ABtn>
+      <ABtn icon="i-bx-plus" class="ml-auto mr-1" @click="showDialog = true">
+        Add Item
+      </ABtn>
     </div>
     <ADialog v-model="showDialog">
-      <AddItem :showDialog="showDialog" @done="showDialog = false" />
+      <AddItem :show-dialog="showDialog" @done="showDialog = false" />
     </ADialog>
   </div>
 </template>

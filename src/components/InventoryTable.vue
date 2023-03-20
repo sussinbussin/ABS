@@ -1,17 +1,17 @@
 <script setup lang="ts">
+import { onMounted, reactive } from 'vue'
 import { pbSymbol } from '~/symbols/injectionSymbols'
 import { useUserStore } from '~/stores/user'
-import { onMounted, reactive } from 'vue';
 
 const userStore = useUserStore()
 
-//Retrieve inventory should it not exist
+// Retrieve inventory should it not exist
 onMounted(async () => {
-  
+
 })
 
 const cols = [
-  //{ name: 'id', isFilterable: true },
+  // { name: 'id', isFilterable: true },
   { name: 'name', isFilterable: true },
   { name: 'qty', isFilterable: true },
   { name: 'actions', isFilterable: false },

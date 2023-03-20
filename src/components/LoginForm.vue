@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { inject, ref, onMounted } from 'vue'
+import { inject, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toast-notification'
 import { useUserStore } from '~/stores/user'
 import { pbSymbol } from '~/symbols/injectionSymbols'
-import { useToast } from 'vue-toast-notification'
 
 const router = useRouter()
 
-const toast = useToast();
+const toast = useToast()
 
 const pb = inject(pbSymbol)
 
@@ -16,55 +16,56 @@ const password = ref('')
 const usernameEmpty = ref(true)
 const passwordEmpty = ref(true)
 
-//TODO: add spinner
+// TODO: add spinner
 const buttonText = ref('Login')
 
 const userStore = useUserStore()
 
-
-//delete all credentials when visiting login.
+// delete all credentials when visiting login.
 onMounted(() => {
   userStore.clear()
-  localStorage.removeItem("pocketbase_auth")
+  localStorage.removeItem('pocketbase_auth')
 })
 
 const throwError = (type: string, message: string) => {
   toast.open({
-    type: type,
-    message: message,
-    position: "bottom"
+    type,
+    message,
+    position: 'bottom',
   })
 }
 
 const usernameEmptyMsg = computed(() => {
   if (username.value && username.value.trim()) {
     usernameEmpty.value = false
-    return ""
-  } else {
+    return ''
+  }
+  else {
     usernameEmpty.value = true
-    return "Username cannot be empty!"
+    return 'Username cannot be empty!'
   }
 })
 
 const passwordEmptyMsg = computed(() => {
   if (password.value && password.value.trim()) {
     passwordEmpty.value = false
-    return ""
-  } else {
+    return ''
+  }
+  else {
     passwordEmpty.value = true
-    return "Password must not be empty"
+    return 'Password must not be empty'
   }
 })
 
 const login = async () => {
   if (!usernameEmpty.value && !passwordEmpty.value) {
-    buttonText.value = "Logging in..."
+    buttonText.value = 'Logging in...'
     try {
       const res = await pb?.collection('users').authWithPassword(username.value, password.value)
 
-      //TODO: add password wrong
+      // TODO: add password wrong
       if (res.record) {
-        buttonText.value = "Logged In! Retreving Data.."
+        buttonText.value = 'Logged In! Retreving Data..'
 
         userStore.user = res.record
 
@@ -72,7 +73,7 @@ const login = async () => {
         const udRes = await pb?.collection('userDetails').getList(1, 50, {
           filter: `userid = "${userStore.user.id}"`,
         })
-        //TODO: wrong implementation of api
+        // TODO: wrong implementation of api
         const ccaRes = await pb?.collection('cca').getList(1, 500, {
           filter: `id="${udRes?.items[0].ccaId}"`,
         })
@@ -85,14 +86,20 @@ const login = async () => {
 
         userStore.inventory = inventoryRes
 
+        const eventRes = await pb?.collection('events').getFullList(500, {
+          filter: `cca.id="${userStore.cca.id}"`,
+        })
+
+        userStore.events = eventRes
+
         router.push('/')
       }
     }
     catch (err) {
-      throwError("error", `"${err}"`)
-      buttonText.value = "Login"
-      username.value = ""
-      password.value = ""
+      throwError('error', `"${err}"`)
+      buttonText.value = 'Login'
+      username.value = ''
+      password.value = ''
     }
   }
 }
@@ -101,10 +108,14 @@ const login = async () => {
 <template>
   <ACard v-motion-pop title="ABS" class="px-5 pb-6">
     <form class="grid-row place-items-stretch" @submit.prevent="login">
-      <AInput v-model="username" :error="usernameEmptyMsg" placeholder="Username" type="text"
-        prepend-inner-icon="i-bx-user" class="text-sm" />
-      <AInput v-model="password" :error="passwordEmptyMsg" placeholder="Password" type="password"
-        prepend-inner-icon="i-bx-lock" class="text-sm" />
+      <AInput
+        v-model="username" :error="usernameEmptyMsg" placeholder="Username" type="text"
+        prepend-inner-icon="i-bx-user" class="text-sm"
+      />
+      <AInput
+        v-model="password" :error="passwordEmptyMsg" placeholder="Password" type="password"
+        prepend-inner-icon="i-bx-lock" class="text-sm"
+      />
       <ABtn>{{ buttonText }}</ABtn>
     </form>
   </ACard>

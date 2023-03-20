@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { inject, ref } from 'vue'
 
+import { useToast } from 'vue-toast-notification'
 import { useUserStore } from '~/stores/user'
 import { pbSymbol } from '~/symbols/injectionSymbols'
-
-import { useToast } from 'vue-toast-notification'
 
 const emit = defineEmits(['done'])
 const pb = inject(pbSymbol)
 const userStore = useUserStore()
 
-const toast = useToast();
-//TODO: add based on fields
-const name = ref("")
+const toast = useToast()
+// TODO: add based on fields
+const name = ref('')
 const qty = ref(0)
 const nameEmpty = ref(true)
 const qtyEmpty = ref(true)
@@ -20,20 +19,22 @@ const qtyEmpty = ref(true)
 const nameEmptyMsg = computed(() => {
   if (name.value && name.value.trim()) {
     nameEmpty.value = false
-    return ""
-  } else {
+    return ''
+  }
+  else {
     nameEmpty.value = true
-    return "Name cannot be empty!"
+    return 'Name cannot be empty!'
   }
 })
 
 const qtyEmptyMsg = computed(() => {
   if (qty.value > 0) {
     qtyEmpty.value = false
-    return ""
-  } else {
+    return ''
+  }
+  else {
     qtyEmpty.value = true
-    return "Quantity must be more than 0!"
+    return 'Quantity must be more than 0!'
   }
 })
 
@@ -43,21 +44,20 @@ const submit = async () => {
       const res = await pb?.collection('inventory').create({
         name: name.value,
         qty: qty.value,
-        cca: userStore.cca.id
+        cca: userStore.cca.id,
       })
       toast.open({
-        type: "success",
-        message: "Item Added!",
-        position: "bottom"
+        type: 'success',
+        message: 'Item Added!',
+        position: 'bottom',
       })
-
-    } catch (err) {
+    }
+    catch (err) {
       toast.open({
-        type: "error",
+        type: 'error',
         message: `${err}`,
-        position: "bottom"
+        position: 'bottom',
       })
-
     }
 
     const inventoryRes = await pb?.collection('inventory').getFullList(500, {
@@ -66,10 +66,10 @@ const submit = async () => {
 
     userStore.inventory = inventoryRes
 
-    name.value = ""
+    name.value = ''
     qty.value = 0
 
-    emit("done")
+    emit('done')
   }
 }
 </script>
