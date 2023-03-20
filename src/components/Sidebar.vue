@@ -2,10 +2,8 @@
 import { computed, onMounted, ref, watchEffect } from 'vue'
 import { useElementHover, useStorage } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
-import { useMotion, useMotions } from '@vueuse/motion'
+import { useMotionVariants, useMotions } from '@vueuse/motion'
 import { useUserStore } from '~/stores/user'
-
-const { sideBarCollaspe } = useMotions()
 
 const sidebarRef = ref<HTMLElement>()
 const route = useRoute()
@@ -13,7 +11,6 @@ const router = useRouter()
 
 const { user, cca } = useUserStore()
 
-const current = ref('')
 // Pin logic
 const pinned = ref(true)
 
@@ -34,16 +31,17 @@ const navigateInventory = () => {
 const navigateEvents = () => {
   router.push('events')
 }
-// collaspe sidebar logic
+
 const isHovered = useElementHover(sidebarRef)
 </script>
 
-<template v-if="display">
+<template>
   <div
     ref="sidebarRef" v-motion-slide-left
     class="h-screen w-250px dark:bg-hex-0a0a0a shadow-inset flex flex-col align-items-stretch bg-noise border-right p-2"
   >
     <div class="flex flex-row h-15">
+      <AAvatar :content="user?.name[0]" />
       <div class="text-left px-3">
         <h1 class="font-bold my-auto">
           {{ user?.name }}
