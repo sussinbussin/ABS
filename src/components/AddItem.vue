@@ -16,6 +16,8 @@ const qty = ref(0)
 const nameEmpty = ref(true)
 const qtyEmpty = ref(true)
 
+
+// TODO: remove computed and change to validate on submit
 const nameEmptyMsg = computed(() => {
   if (name.value && name.value.trim()) {
     nameEmpty.value = false
