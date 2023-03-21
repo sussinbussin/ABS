@@ -7,24 +7,19 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AAvata: typeof import('anu-vue')['AAvata']
     AAvatar: typeof import('anu-vue')['AAvatar']
     ABtn: typeof import('anu-vue')['ABtn']
     ACard: typeof import('anu-vue')['ACard']
-    ADataTable: typeof import('anu-vue')['ADataTable']
     AddItem: typeof import('./src/components/AddItem.vue')['default']
     AddProductScreen: typeof import('./src/components/AddProductScreen.vue')['default']
     ADialog: typeof import('anu-vue')['ADialog']
     AInput: typeof import('anu-vue')['AInput']
-    ATable: typeof import('anu-vue')['ATable']
     EventScreen: typeof import('./src/components/EventScreen.vue')['default']
+    InventoryCard: typeof import('./src/components/InventoryCard.vue')['default']
     InventoryTable: typeof import('./src/components/InventoryTable.vue')['default']
     LoginForm: typeof import('./src/components/LoginForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Sidebar: typeof import('./src/components/Sidebar.vue')['default']
-    TheCounter: typeof import('./src/components/TheCounter.vue')['default']
-    TheFooter: typeof import('./src/components/TheFooter.vue')['default']
-    TheInput: typeof import('./src/components/TheInput.vue')['default']
   }
 }
