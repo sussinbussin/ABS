@@ -17,16 +17,6 @@ import 'vue-toast-notification/dist/theme-bootstrap.css'
 import pb from './api/pocketbase'
 import { pbSymbol } from './symbols/injectionSymbols'
 
-import 'vuetify/styles';
-import { createVuetify } from 'vuetify';
-import * as components from 'vuetify/components';
-import * as directives from 'vuetify/directives';
-
-const vuetify = createVuetify({
-  components,
-  directives,
-});
-
 const app = createApp(App)
 const pinia = createPinia()
 
@@ -44,6 +34,5 @@ app.use(router)
 app.use(pinia)
 app.use(MotionPlugin)
 app.use(ToastPlugin)
-app.use(vuetify)
 app.provide(pbSymbol, pb)
 app.mount('#app')
