@@ -17,7 +17,7 @@ const toggleView = () => {
     </h1>
 
     <div class="flex w-2/3">
-      <ABtn class="m-2 w-1/3" @click="toggleView()">
+      <ABtn class="mx-2 mb-2 w-1/3" @click="toggleView()">
         <div v-if="isListView">List View</div>
         <div v-else>Card View</div>
       </ABtn>
