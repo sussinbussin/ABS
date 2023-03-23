@@ -10,6 +10,14 @@ const pb = inject(pbSymbol)
 
 const inventory = computed(() => userStore.inventory)
 
+const inventoryGroup = inventory.value.reduce((acc, item) => {
+    if (!acc[item.asset_name.trim()]) {
+        acc[item.asset_name.trim()] = []
+    }
+    acc[item.asset_name.trim()].push(item)
+    return acc
+}, {})
+
 // open multiple cards
 // const expanded = ref(new Array(inventory.length).fill(false))
 
@@ -30,9 +38,18 @@ const toggleExpand = (index: number) => {
 
 const cardsRef = ref<HTMLElement>()
 
-const getImageUrl = (item: Record) => {
-    if (item.image !== '') {
-        return pb?.collection('inventory').client.baseUrl + "/api/files/inventory/" + item.id + "/" + item.image;
+const getImageUrl = (items: Array<Record>) => {
+    const item = ref()
+    // console.log(typeof items)
+    items.forEach((e: Object) => {
+         if (e.image !== '') {
+            item.value = e
+            return false
+         }
+    })
+
+    if (item.value !== undefined) {
+        return pb?.collection('assets').client.baseUrl + "/api/files/assets/" + item.value.id + "/" + item.value.image;
     } else {
         return null
     }
@@ -44,7 +61,7 @@ const getImageUrl = (item: Record) => {
         <div class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" ref="cardsRef"
             v-motion-slide-right>
             <div class="flex flex-col h-auto border border-transparent rounded-lg bg-gray-8 mx-2 my-5 hover:bg-gray-7 hover:scale-103% transition-transform duration-300"
-                v-for="(item, index) in inventory" :key="item.id" :style="{
+                v-for="(items, index) in inventoryGroup" :key="items.id" :style="{
                     // open multiple cards change: expanded => expanded[index]
                     // the following 3 styles allows overlapping
                     // good for opening 1 card at a time
@@ -53,16 +70,17 @@ const getImageUrl = (item: Record) => {
                     marginBottom: expanded == index ? '-145px' : '0'
                 }">
                 <div class="border border-gray-7 rounded-lg h-150px mb-1 flex justify-center ">
-                    <img :src="getImageUrl(item) ? getImageUrl(item) : imagePlaceHolder" alt="Image" class="max-w-100% max-h-100% object-contain"/>
+                    <img :src="getImageUrl(items) ? getImageUrl(items) : imagePlaceHolder" alt="Image"
+                        class="max-w-100% max-h-100% object-contain" />
                 </div>
 
 
                 <div class="mx-2 text-justify">
                     <div class="truncate font-bold text-5">
-                        {{ item.name }}
+                        {{ index }}
                     </div>
                     <div class="truncate text-3.5 text-gray-4">
-                        Qty: {{ item.qty }}
+                        Qty: {{ items.length }}
                     </div>
                 </div>
 
