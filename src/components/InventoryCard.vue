@@ -84,13 +84,15 @@ const getImageUrl = (items: Array<Record>) => {
                     </div>
                 </div>
 
-                <div v-show="expanded == index" class="">
-                    <div>PLACEHOLDER</div>
-                    <div>PLACEHOLDER</div>
-                    <div>PLACEHOLDER</div>
-                    <div>PLACEHOLDER</div>
-                    <div>PLACEHOLDER</div>
-                    <div>PLACEHOLDER</div>
+                <div v-show="expanded == index" class="h-36 overflow-y-scroll">
+                    <div v-for="e in items" :key="e" class="flex flex-row justify-between mx-2 text-3">
+                        <div>
+                            {{ e.asset_tag }}
+                        </div>
+                        <div>
+                            {{ e.asset_condition }}
+                        </div>
+                    </div>
                 </div>
 
 
