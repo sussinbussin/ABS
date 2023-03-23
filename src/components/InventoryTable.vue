@@ -15,8 +15,8 @@ const editQty = ref(0)
 const editId = ref("")
 
 const retrieveInventory = async () => {
-  const inventoryRes = await pb?.collection('inventory').getFullList(500, {
-    filter: `cca.id="${userStore.cca.id}"`,
+  const inventoryRes = await pb?.collection('assets').getFullList(500, {
+    filter: `club="${userStore.cca.name}"`,
   })
 
   userStore.inventory = inventoryRes
@@ -27,21 +27,15 @@ onMounted(async () => {
 })
 
 
+//hardcoded defaults
+// TODO: upload to online 
 const cols = [
-  { name: 'id', show: false },
-  { name: 'name', show: true },
-  { name: 'qty', show: true },
-  { name: 'actions', show: true },
+  "asset_name",
+  "asset_condition",
+  "total_quantity",
+  "category"
 ]
 
-const tableData = computed(() => {
-  return userStore.inventory.map(({ name, qty, id }) => ({ id, name, qty }))
-  // //return userStore.inventory.map(item => {
-  //   cols.forEach(col => {
-  //
-  //   })
-  // })
-})
 
 const trash = (id: string) => {
   showDeleteDialog.value = true
@@ -49,7 +43,7 @@ const trash = (id: string) => {
 }
 
 const trashConfirm = async () => {
-  await pb?.collection('inventory').delete(deleteTemp.value)
+  await pb?.collection('assets').delete(deleteTemp.value)
 
   deleteTemp.value = ""
   await retrieveInventory()
@@ -66,7 +60,7 @@ const edit = (id: string) => {
 }
 
 const submitEdit = async () => {
-  await pb?.collection('inventory').update(editId.value, {
+  await pb?.collection('assets').update(editId.value, {
     name: editName.value,
     qty: editQty.value
   })
@@ -97,16 +91,16 @@ const submitEdit = async () => {
     <table class="relative w-full border-separate">
       <thead class="sticky top-0 border-bottom">
         <tr>
-          <th v-for="item in cols" v-show="item.show">{{ item.name }}</th>
+          <th v-for="item in cols">{{ item.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) }}</th>
         </tr>
       </thead>
       <tbody class="">
-        <tr v-for="item in tableData">
-          <td v-for="row in item">
-            {{ row }}
+        <tr v-for="item in userStore.inventory">
+          <td v-for="row in cols">
+            {{ item[row] }}
           </td>
           <td class="px-3 py-2">
-            <ABtn class="text-xs" icon="i-bx-link-external" icon-only color="default" variant="text" />
+            <!-- <ABtn class="text-xs" icon="i-bx-link-external" icon-only color="default" variant="text" /> -->
             <ABtn class="text-xs" icon="i-bx-edit-alt" icon-only variant="text" color="default" @click="edit(item.id)" />
             <ABtn class="text-xs" icon="i-bx-trash" icon-only variant="text" color="default" @click="trash(item.id)" />
           </td>

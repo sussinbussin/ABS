@@ -80,17 +80,17 @@ const login = async () => {
         if (ccaRes?.items[0])
           userStore.cca = ccaRes?.items[0]
 
-        const inventoryRes = await pb?.collection('inventory').getFullList(500, {
-          filter: `cca.id="${userStore.cca.id}"`,
+        const inventoryRes = await pb?.collection('assets').getFullList(500, {
+          filter: `club="${userStore.cca.name}"`,
         })
 
         userStore.inventory = inventoryRes
 
-        const eventRes = await pb?.collection('events').getFullList(500, {
-          filter: `cca.id="${userStore.cca.id}"`,
-        })
-
-        userStore.events = eventRes
+        // const eventRes = await pb?.collection('events').getFullList(500, {
+        //   filter: `cca.id="${userStore.cca.id}"`,
+        // })
+        //
+        // userStore.events = eventRes
 
         router.push('/')
       }
@@ -108,14 +108,10 @@ const login = async () => {
 <template>
   <ACard v-motion-pop title="ABS" class="px-5 pb-6">
     <form class="grid-row place-items-stretch" @submit.prevent="login">
-      <AInput
-        v-model="username" :error="usernameEmptyMsg" placeholder="Username" type="text"
-        prepend-inner-icon="i-bx-user" class="text-sm"
-      />
-      <AInput
-        v-model="password" :error="passwordEmptyMsg" placeholder="Password" type="password"
-        prepend-inner-icon="i-bx-lock" class="text-sm"
-      />
+      <AInput v-model="username" :error="usernameEmptyMsg" placeholder="Username" type="text"
+        prepend-inner-icon="i-bx-user" class="text-sm" />
+      <AInput v-model="password" :error="passwordEmptyMsg" placeholder="Password" type="password"
+        prepend-inner-icon="i-bx-lock" class="text-sm" />
       <ABtn>{{ buttonText }}</ABtn>
     </form>
   </ACard>
