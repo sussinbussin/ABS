@@ -13,8 +13,8 @@ const pb = inject(pbSymbol)
 
 const username = ref('')
 const password = ref('')
-const usernameEmpty = ref(true)
-const passwordEmpty = ref(true)
+const usernameErrMsg = ref('')
+const passwordErrMsg = ref('')
 
 // TODO: add spinner
 const buttonText = ref('Login')
@@ -35,72 +35,73 @@ const throwError = (type: string, message: string) => {
   })
 }
 
-const usernameEmptyMsg = computed(() => {
-  if (username.value && username.value.trim()) {
-    usernameEmpty.value = false
-    return ''
-  }
-  else {
-    usernameEmpty.value = true
-    return 'Username cannot be empty!'
-  }
-})
-
-const passwordEmptyMsg = computed(() => {
-  if (password.value && password.value.trim()) {
-    passwordEmpty.value = false
-    return ''
-  }
-  else {
-    passwordEmpty.value = true
-    return 'Password must not be empty'
-  }
-})
 
 const login = async () => {
-  if (!usernameEmpty.value && !passwordEmpty.value) {
-    buttonText.value = 'Logging in...'
-    try {
-      const res = await pb?.collection('users').authWithPassword(username.value, password.value)
+  passwordErrMsg.value = ''
+  usernameErrMsg.value = ''
+  buttonText.value = 'Logging in...'
 
-      // TODO: add password wrong
-      if (res.record) {
-        buttonText.value = 'Logged In! Retreving Data..'
+  let error = false;
+  //form validation
+  if (username.value === '') {
+    usernameErrMsg.value = 'Username should not be empty'
+    error = true
+  }
 
-        userStore.user = res.record
+  if (password.value === '') {
+    passwordErrMsg.value = 'Password should not be empty'
+    error = true
+  }
 
-        // get rest of the details
-        const udRes = await pb?.collection('userDetails').getList(1, 50, {
-          filter: `userid = "${userStore.user.id}"`,
-        })
-        // TODO: wrong implementation of api
-        const ccaRes = await pb?.collection('cca').getList(1, 500, {
-          filter: `id="${udRes?.items[0].ccaId}"`,
-        })
-        if (ccaRes?.items[0])
-          userStore.cca = ccaRes?.items[0]
+  if (error) {
+    buttonText.value = 'Login'
+    return
+  }
 
-        const inventoryRes = await pb?.collection('assets').getFullList(500, {
-          filter: `club="${userStore.cca.name}"`,
-        })
 
-        userStore.inventory = inventoryRes
+  try {
+    const res = await pb?.collection('users').authWithPassword(username.value, password.value)
 
-        // const eventRes = await pb?.collection('events').getFullList(500, {
-        //   filter: `cca.id="${userStore.cca.id}"`,
-        // })
-        //
-        // userStore.events = eventRes
+    // TODO: add password wrong
+    if (res.record) {
+      buttonText.value = 'Logged In! Retreving Data..'
 
-        router.push('/')
-      }
+      userStore.user = res.record
+
+      // get rest of the details
+      const udRes = await pb?.collection('userDetails').getList(1, 50, {
+        filter: `userid = "${userStore.user.id}"`,
+      })
+      // TODO: wrong implementation of api
+      const ccaRes = await pb?.collection('cca').getList(1, 500, {
+        filter: `id="${udRes?.items[0].ccaId}"`,
+      })
+      if (ccaRes?.items[0])
+        userStore.cca = ccaRes?.items[0]
+
+      const inventoryRes = await pb?.collection('assets').getFullList(500, {
+        filter: `club="${userStore.cca.name}"`,
+      })
+
+      userStore.inventory = inventoryRes
+
+      // const eventRes = await pb?.collection('events').getFullList(500, {
+      //   filter: `cca.id="${userStore.cca.id}"`,
+      // })
+      //
+      // userStore.events = eventRes
+
+      router.push('/')
     }
-    catch (err) {
-      throwError('error', `"${err}"`)
-      buttonText.value = 'Login'
-      username.value = ''
-      password.value = ''
-    }
+  }
+  catch (err) {
+    throwError('error', `"${err}"`)
+    buttonText.value = 'Login'
+    username.value = ''
+    password.value = ''
+
+    passwordErrMsg.value = "Invalid Password!"
+    usernameErrMsg.value = "Invalid Username!"
   }
 }
 </script>
@@ -108,9 +109,9 @@ const login = async () => {
 <template>
   <ACard v-motion-pop title="ABS" class="px-5 pb-6">
     <form class="grid-row place-items-stretch" @submit.prevent="login">
-      <AInput v-model="username" :error="usernameEmptyMsg" placeholder="Username" type="text"
-        prepend-inner-icon="i-bx-user" class="text-sm" />
-      <AInput v-model="password" :error="passwordEmptyMsg" placeholder="Password" type="password"
+      <AInput v-model="username" :error="usernameErrMsg" placeholder="Username" type="text" prepend-inner-icon="i-bx-user"
+        class="text-sm" />
+      <AInput v-model="password" :error="passwordErrMsg" placeholder="Password" type="password"
         prepend-inner-icon="i-bx-lock" class="text-sm" />
       <ABtn>{{ buttonText }}</ABtn>
     </form>
