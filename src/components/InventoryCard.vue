@@ -20,7 +20,6 @@ const inventoryGroup = inventory.value.reduce((acc, item) => {
 
 // open multiple cards
 const expanded = ref(Object.fromEntries(Object.keys(inventoryGroup).map(key => [key, false])))
-console.log(expanded)
 
 // open one card only
 // const expanded = ref(-1)
