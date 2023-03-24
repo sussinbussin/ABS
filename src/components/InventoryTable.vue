@@ -18,6 +18,9 @@ const editId = ref("")
 
 //filter option refs
 const groupItems = ref(false)
+const selectedCols = ref({})
+const showColsDialog = ref(false)
+
 
 const retrieveInventory = async () => {
   const inventoryRes = await pb?.collection('assets').getFullList(500, {
@@ -28,22 +31,33 @@ const retrieveInventory = async () => {
 }
 //TODO: Retrieve inventory should it not exist
 onMounted(async () => {
-  retrieveInventory()
+  await retrieveInventory()
+
+  //set Columns
+  //TODO: make it less hard coded
+  selectedCols.value = {
+    "asset_name": true,
+    "asset_condition": true,
+    "total_quantity": true,
+    "category": true,
+  }
 })
 
-//hardcoded defaults
-// TODO: upload to online 
-const cols = [
-  "asset_name",
-  "asset_condition",
-  "total_quantity",
-  "category",
-]
 
+
+const allCols = computed(() => {
+  return Object.keys(userStore.inventory[0])
+    .map(item => {
+      return {
+        raw: item,
+        formatted: item.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+      }
+    })
+})
 //without id
 const formattedCols = computed(() => {
   return Object.keys(userStore.inventory[0])
-    .filter(item => item !== "id" && item !== "expand")
+    .filter(item => selectedCols.value[item])
     .map(item => {
       return {
         raw: item,
@@ -56,9 +70,6 @@ const formattedCols = computed(() => {
 const displayedTable = computed(() => {
   return userStore.inventory
 })
-
-
-
 
 
 //Crud operations
@@ -98,36 +109,21 @@ const navigate = (id) => {
 
 <template>
   <div class="flex flex-row px-5">
-    <ACheckbox v-model="groupItems">Group Items</ACheckbox>
+    <!-- <ACheckbox v-model="groupItems">Group Items</ACheckbox> -->
+    <ABtn variant="text" @click="showColsDialog = true">Edit Columns</ABtn>
   </div>
   <div class="w-full p-3 max-h-700px overflow-y-scroll">
-    <!-- ABtn -->
-    <!--   icon=" i-bx-plus" variant="outline" onclick="location.href='/addProducts';" -->
-    <!--   class="mt-5 float-left absolute left-9" -->
-    <!-- > -->
-    <!--   Add Products -->
-    <!--Btn -->
-
-    <!-- <ADataTable v-motion-pop :cols="cols" :rows="userStore.inventory" search multi-sort :page-size="10"> -->
-    <!--   <template #col-actions> -->
-    <!--     <div class="flex"> -->
-    <!--       <ABtn class="text-xs" icon="i-bx-link-external" icon-only color="default" variant="text" /> -->
-    <!--       <ABtn class="text-xs" icon="i-bx-edit-alt" icon-only variant="text" color="default" /> -->
-    <!--       <ABtn class="text-xs" icon="i-bx-trash" icon-only variant="text" color="default"></ABtn> -->
-    <!--     </div> -->
-    <!--   </template> -->
-    <!-- </ADataTable> -->
     <table class="relative w-full border-separate">
       <thead class="sticky top-0 border-bottom">
         <tr>
-          <th v-for="item in cols">{{ item.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) }}</th>
+          <th v-for="item in formattedCols">{{ item.formatted }}</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody class="">
         <tr v-for="item in displayedTable">
-          <td v-for="row in cols">
-            {{ item[row] }}
+          <td v-for="row in formattedCols">
+            {{ item[row.raw] }}
           </td>
           <td class="px-3 py-2">
             <ABtn class="text-xs" icon="i-bx-link-external" icon-only color="default" variant="text"
@@ -138,14 +134,16 @@ const navigate = (id) => {
         </tr>
       </tbody>
     </table>
-    <ADialog v-model="showEditDialog" title="Edit Item" class="w-[800px]">
-      <form class="grid-row sm:grid-cols-3 place-items-stretch p-5" @submit.prevent="submitEdit">
+    <ADialog v-model="showEditDialog" title="Edit Item" class="w-[900px]">
+      <form class="p-5" @submit.prevent="submitEdit">
         <!-- <AInput v-model="editName" placeholder="name" type="text" class-text-sm /> -->
         <!-- <AInput v-model="editQty" placeholder="qty" type="number" class-text-sm /> -->
-        <div v-for="item in formattedCols">
-          <AInput v-model="editItem[item.raw]" :label="item.formatted" type="text" class-text-sm />
+        <div class="grid-row sm:grid-cols-3 place-items-stretch pb-3">
+          <div v-for="item in formattedCols">
+            <AInput v-model="editItem[item.raw]" :label="item.formatted" type="text" class-text-sm />
+          </div>
         </div>
-        <ABtn>Submit</ABtn>
+        <ABtn class="w-full p-2">Submit</ABtn>
       </form>
     </ADialog>
     <ADialog v-model="showDeleteDialog" title="Deleting Item" text="Are you sure?">
@@ -153,6 +151,15 @@ const navigate = (id) => {
         <ABtn w-full class="mb-3" variant="light" color="danger" @click="trashConfirm">Yes</ABtn>
         <ABtn w-full @click="showDeleteDialog = false">Cancel</ABtn>
       </div>
+    </ADialog>
+    <ADialog class="p-5" v-model="showColsDialog" title="Table Columns"
+      subtitle="Select properties you would like to see">
+      <div class="grid-row sm:grid-cols-3 place-items-stretch px-5 pb-5">
+        <ACheckbox v-for="item in allCols" v-model="selectedCols[item.raw]">
+          {{ item.formatted }}
+        </ACheckbox>
+      </div>
+      <ABtn class="w-full" @click="showColsDialog = false">Done</ABtn>
     </ADialog>
   </div>
 </template>

@@ -11,77 +11,53 @@ const userStore = useUserStore()
 
 const toast = useToast()
 // TODO: add based on fields
-const name = ref('')
-const qty = ref(0)
-const nameEmpty = ref(true)
-const qtyEmpty = ref(true)
+const addedItem = ref({})
 
-
-// TODO: remove computed and change to validate on submit
-const nameEmptyMsg = computed(() => {
-  if (name.value && name.value.trim()) {
-    nameEmpty.value = false
-    return ''
-  }
-  else {
-    nameEmpty.value = true
-    return 'Name cannot be empty!'
-  }
-})
-
-const qtyEmptyMsg = computed(() => {
-  if (qty.value > 0) {
-    qtyEmpty.value = false
-    return ''
-  }
-  else {
-    qtyEmpty.value = true
-    return 'Quantity must be more than 0!'
-  }
-})
-
-const submit = async () => {
-  if (!nameEmpty.value && !qtyEmpty.value) {
-    try {
-      const res = await pb?.collection('inventory').create({
-        name: name.value,
-        qty: qty.value,
-        cca: userStore.cca.id,
-      })
-      toast.open({
-        type: 'success',
-        message: 'Item Added!',
-        position: 'bottom',
-      })
-    }
-    catch (err) {
-      toast.open({
-        type: 'error',
-        message: `${err}`,
-        position: 'bottom',
-      })
-    }
-
-    const inventoryRes = await pb?.collection('inventory').getFullList(500, {
-      filter: `cca.id="${userStore.cca.id}"`,
+const formattedCols = computed(() => {
+  return Object.keys(userStore.inventory[0])
+    .filter(item => item !== "id" && item !== "expand")
+    .map(item => {
+      return {
+        raw: item,
+        formatted: item.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+      }
     })
+})
 
-    userStore.inventory = inventoryRes
+// TODO: form validation
+const submit = async () => {
+  //TODO: add
+  const res = await pb?.collection('assets').create(addedItem.value)
 
-    name.value = ''
-    qty.value = 0
-
-    emit('done')
+  if (res?.code) {
+    //error
+    toast.open({
+      type: 'error',
+      message: res?.message,
+      position: 'bottom'
+    })
   }
+  const inventoryRes = await pb?.collection('assets').getFullList(500, {
+    filter: `club="${userStore.cca.name}"`,
+  })
+
+  userStore.inventory = inventoryRes
+  emit('done')
 }
 </script>
 
 <template>
   <ACard title="Add Item" class="px-5 pb-6">
-    <form class="grid-row place-items-stretch" @submit.prevent="submit">
-      <AInput v-model="name" :error="nameEmptyMsg" placeholder="name" type="text" class-text-sm />
-      <AInput v-model="qty" :error="qtyEmptyMsg" placeholder="qty" type="number" class-text-sm />
-      <ABtn>Submit</ABtn>
+    <form class="" @submit.prevent="submit">
+      <!-- <AInput v-model="name" :error="nameEmptyMsg" placeholder="name" type="text" class-text-sm /> -->
+      <!-- <AInput v-model="qty" :error="qtyEmptyMsg" placeholder="qty" type="number" class-text-sm /> -->
+      <div class="grid-row sm:grid-cols-3 place-items-stretch pb-3">
+        <div v-for="item in formattedCols">
+          <AInput v-model="addedItem[item.raw]" :label="item.formatted" type="text" class-text-sm />
+
+        </div>
+      </div>
+      <ABtn class="w-full">Submit</ABtn>
     </form>
   </ACard>
 </template>

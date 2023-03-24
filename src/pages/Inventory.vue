@@ -15,7 +15,7 @@ const showDialog = ref(false)
     <div class="flex flex-row p-3 mb-auto">
       <ABtn icon='i-bx-plus' class="ml-auto mr-1" @click="showDialog = true">Add Item</ABtn>
     </div>
-    <ADialog v-model="showDialog">
+    <ADialog v-model="showDialog" class="w-[900px]">
       <AddItem :show-dialog="showDialog" @done="showDialog = false" />
     </ADialog>
   </div>
