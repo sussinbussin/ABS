@@ -38,7 +38,7 @@ onMounted(async () => {
   //TODO: make it less hard coded
   selectedCols.value = {
     "asset_name": true,
-    "total_quantity": true,
+    "loan_status": true,
     "category": true,
   }
 })
