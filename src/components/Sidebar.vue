@@ -25,21 +25,19 @@ const getPinnedVariant = computed(() => {
 })
 
 const navigateInventory = () => {
-  router.push('inventory')
+  router.push('/inventory')
 }
 
 const navigateEvents = () => {
-  router.push('events')
+  router.push('/events')
 }
 
 const isHovered = useElementHover(sidebarRef)
 </script>
 
 <template>
-  <div
-    ref="sidebarRef" v-motion-slide-left
-    class="h-screen w-250px dark:bg-hex-0a0a0a shadow-inset flex flex-col align-items-stretch bg-noise border-right p-2"
-  >
+  <div ref="sidebarRef" v-motion-slide-left
+    class="h-screen w-250px dark:bg-hex-0a0a0a shadow-inset flex flex-col align-items-stretch bg-noise border-right p-2">
     <div class="flex flex-row h-15">
       <AAvatar :content="user?.name[0]" />
       <div class="text-left px-3">

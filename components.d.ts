@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
     AAvatar: typeof import('anu-vue')['AAvatar']
     ABtn: typeof import('anu-vue')['ABtn']
     ACard: typeof import('anu-vue')['ACard']
+    ACheckbox: typeof import('anu-vue')['ACheckbox']
     ADataTable: typeof import('anu-vue')['ADataTable']
     AddItem: typeof import('./src/components/AddItem.vue')['default']
     AddProductScreen: typeof import('./src/components/AddProductScreen.vue')['default']

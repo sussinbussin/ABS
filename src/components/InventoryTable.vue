@@ -3,16 +3,21 @@ import { ref } from 'vue'
 import { pbSymbol } from '~/symbols/injectionSymbols'
 import { useUserStore } from '~/stores/user'
 import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 const userStore = useUserStore()
 const pb = inject(pbSymbol)
+const router = useRouter()
 
+//Dialog Crud refs
 const showEditDialog = ref(false)
 const showDeleteDialog = ref(false)
 const deleteTemp = ref("")
-const editName = ref("")
-const editQty = ref(0)
+const editItem = ref({})
 const editId = ref("")
+
+//filter option refs
+const groupItems = ref(false)
 
 const retrieveInventory = async () => {
   const inventoryRes = await pb?.collection('assets').getFullList(500, {
@@ -26,17 +31,37 @@ onMounted(async () => {
   retrieveInventory()
 })
 
-
 //hardcoded defaults
 // TODO: upload to online 
 const cols = [
   "asset_name",
   "asset_condition",
   "total_quantity",
-  "category"
+  "category",
 ]
 
+//without id
+const formattedCols = computed(() => {
+  return Object.keys(userStore.inventory[0])
+    .filter(item => item !== "id" && item !== "expand")
+    .map(item => {
+      return {
+        raw: item,
+        formatted: item.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+      }
+    })
+})
 
+
+const displayedTable = computed(() => {
+  return userStore.inventory
+})
+
+
+
+
+
+//Crud operations
 const trash = (id: string) => {
   showDeleteDialog.value = true
   deleteTemp.value = id
@@ -55,22 +80,26 @@ const edit = (id: string) => {
   showEditDialog.value = true
   let item = userStore.inventory.find(item => item.id === id)
   editId.value = id
-  editName.value = item.name
-  editQty.value = item.qty
+  editItem.value = item
 }
 
 const submitEdit = async () => {
-  await pb?.collection('assets').update(editId.value, {
-    name: editName.value,
-    qty: editQty.value
-  })
+  await pb?.collection('assets').update(editId.value, editItem.value)
 
   await retrieveInventory()
   showEditDialog.value = false
 }
+
+
+const navigate = (id) => {
+  router.push('/assets/' + id)
+}
 </script>
 
 <template>
+  <div class="flex flex-row px-5">
+    <ACheckbox v-model="groupItems">Group Items</ACheckbox>
+  </div>
   <div class="w-full p-3 max-h-700px overflow-y-scroll">
     <!-- ABtn -->
     <!--   icon=" i-bx-plus" variant="outline" onclick="location.href='/addProducts';" -->
@@ -92,25 +121,30 @@ const submitEdit = async () => {
       <thead class="sticky top-0 border-bottom">
         <tr>
           <th v-for="item in cols">{{ item.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) }}</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody class="">
-        <tr v-for="item in userStore.inventory">
+        <tr v-for="item in displayedTable">
           <td v-for="row in cols">
             {{ item[row] }}
           </td>
           <td class="px-3 py-2">
-            <!-- <ABtn class="text-xs" icon="i-bx-link-external" icon-only color="default" variant="text" /> -->
+            <ABtn class="text-xs" icon="i-bx-link-external" icon-only color="default" variant="text"
+              @click="navigate(item.id)" />
             <ABtn class="text-xs" icon="i-bx-edit-alt" icon-only variant="text" color="default" @click="edit(item.id)" />
             <ABtn class="text-xs" icon="i-bx-trash" icon-only variant="text" color="default" @click="trash(item.id)" />
           </td>
         </tr>
       </tbody>
     </table>
-    <ADialog v-model="showEditDialog" title="Edit Item">
-      <form class="grid-row place-items-stretch p-5" @submit.prevent="submitEdit">
-        <AInput v-model="editName" placeholder="name" type="text" class-text-sm />
-        <AInput v-model="editQty" placeholder="qty" type="number" class-text-sm />
+    <ADialog v-model="showEditDialog" title="Edit Item" class="w-[800px]">
+      <form class="grid-row sm:grid-cols-3 place-items-stretch p-5" @submit.prevent="submitEdit">
+        <!-- <AInput v-model="editName" placeholder="name" type="text" class-text-sm /> -->
+        <!-- <AInput v-model="editQty" placeholder="qty" type="number" class-text-sm /> -->
+        <div v-for="item in formattedCols">
+          <AInput v-model="editItem[item.raw]" :label="item.formatted" type="text" class-text-sm />
+        </div>
         <ABtn>Submit</ABtn>
       </form>
     </ADialog>
