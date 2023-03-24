@@ -21,6 +21,7 @@ const groupItems = ref(false)
 const selectedCols = ref({})
 const showColsDialog = ref(false)
 
+const search = ref("")
 
 const retrieveInventory = async () => {
   const inventoryRes = await pb?.collection('assets').getFullList(500, {
@@ -37,7 +38,6 @@ onMounted(async () => {
   //TODO: make it less hard coded
   selectedCols.value = {
     "asset_name": true,
-    "asset_condition": true,
     "total_quantity": true,
     "category": true,
   }
@@ -66,9 +66,24 @@ const formattedCols = computed(() => {
     })
 })
 
-
+//TODO: add debounce its laggy af
 const displayedTable = computed(() => {
-  return userStore.inventory
+  //filter
+  if (search.value === "") {
+    return userStore.inventory
+  }
+
+  return userStore.inventory.filter(item => {
+    let result = false
+    Object.values(item).forEach(val => {
+      if (typeof val === 'string') {
+        if (val.toLowerCase().includes(search.value.toLowerCase())) {
+          result = true
+        }
+      }
+    })
+    return result
+  })
 })
 
 
@@ -111,6 +126,7 @@ const navigate = (id) => {
   <div class="flex flex-row px-5">
     <!-- <ACheckbox v-model="groupItems">Group Items</ACheckbox> -->
     <ABtn variant="text" @click="showColsDialog = true">Edit Columns</ABtn>
+    <AInput v-model="search" placeholder="Search Name" type="text" class="text-sm" />
   </div>
   <div class="w-full p-3 max-h-700px overflow-y-scroll">
     <table class="relative w-full border-separate">
