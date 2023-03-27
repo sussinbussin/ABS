@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     AAvatar: typeof import('anu-vue')['AAvatar']
     ABtn: typeof import('anu-vue')['ABtn']
     ACard: typeof import('anu-vue')['ACard']
+    AChip: typeof import('anu-vue')['AChip']
     AddItem: typeof import('./src/components/AddItem.vue')['default']
     AddProductScreen: typeof import('./src/components/AddProductScreen.vue')['default']
     ADialog: typeof import('anu-vue')['ADialog']
