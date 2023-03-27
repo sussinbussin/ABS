@@ -94,7 +94,7 @@ const print = (items: any) => {
                     </div>
 
                     <div :class="normalDisplay !== index ? 'translate-y-0' : '-translate-y-full'"
-                        class="flex flex-col justify-evenly h-250px absolute top-0 left-0 w-full transition-all duration-300">
+                        class="flex flex-col justify-evenly h-full pb-2 absolute top-0 left-0 w-full transition-all duration-300">
                         <div class="border border-gray-7 rounded-lg h-70% mb-1 flex justify-center ">
                             <img :src="getImageUrl(items) ? getImageUrl(items) : imagePlaceHolder" alt="Image"
                                 class="max-w-100% max-h-100% object-contain rounded-lg" />
