@@ -8,27 +8,29 @@ const isListView = ref(true)
 const toggleView = () => {
   isListView.value = !isListView.value
 }
+
+const tableViews = ['Table View', 'Card View']
+
+//TODO: save preferences in pb
+const selectedView = ref('Table View')
 </script>
 
 <template>
   <div class="flex flex-col h-screen">
-    <h1 class="font-bold text-xl p-5 text-left">
-      My Inventory
-    </h1>
+    <div class="flex flex-row">
+      <h1 class="font-bold text-xl p-5 text-left">
+        My Inventory
+      </h1>
+      <ASelect class="py-5 text-xs grow-0" v-model="selectedView" :options="tableViews" />
 
-    <div class="flex w-2/3">
-      <ABtn class="mx-2 mb-2 w-1/3" @click="toggleView()">
-        <div v-if="isListView">List View</div>
-        <div v-else>Card View</div>
-      </ABtn>
     </div>
 
     <Suspense class="flex-grow">
-      <InventoryTable v-if="isListView"/>
+      <InventoryTable v-if="selectedView == 'Table View'" />
       <InventoryCard v-else />
     </Suspense>
 
-    <div class="flex flex-row p-3 mb-auto" >
+    <div class="flex flex-row p-3 mb-auto">
       <ABtn icon='i-bx-plus' class="ml-auto mr-1" @click="showDialog = true">Add Item</ABtn>
     </div>
 

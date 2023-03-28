@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { pbSymbol } from '~/symbols/injectionSymbols'
 import { useUserStore } from '~/stores/user'
-import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const userStore = useUserStore()
@@ -88,6 +87,10 @@ const displayedTable = computed(() => {
   })
 })
 
+const groupedTable = computed(() => {
+  if (!groupItems.value) return
+
+})
 
 //Crud operations
 const trash = (id: string) => {
@@ -142,7 +145,7 @@ const navigate = (id) => {
       </thead>
       <tbody class="">
         <tr v-for="item in displayedTable">
-          <td v-for="row in formattedCols">
+          <td v-motion-pop v-for="row in formattedCols">
             {{ item[row.raw] }}
           </td>
           <td class="px-3 py-2">

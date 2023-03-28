@@ -40,10 +40,6 @@ const navigateEvents = () => {
   router.push('/events')
 }
 
-
-
-
-
 </script>
 
 <template>
