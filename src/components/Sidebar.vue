@@ -26,7 +26,7 @@ const { variant, apply } = useMotion(sidebarRef, {
     transition: {
       type: 'spring',
       stiffness: 250,
-      delay: 100
+      damping: 20
     }
   }
 })
@@ -85,7 +85,8 @@ const navigateEvents = () => {
     <ABtn icon="i-bx-package" :variant="route.name === 'Inventory' ? 'fill' : 'light'" @click="navigateInventory">
       {{ variant == 'initial' ? 'Inventory' : '' }}
     </ABtn>
-    <ABtn icon="i-bx-package" :variant="route.name === 'Events' ? 'fill' : 'light'" class="mt" @click="navigateEvents">
+    <ABtn icon="i-bx-calendar-event" :variant="route.name === 'Events' ? 'fill' : 'light'" class="mt"
+      @click="navigateEvents">
       {{ variant == 'initial' ? 'Events' : '' }}
     </ABtn>
     <div class="mt-auto flex flex-row">
