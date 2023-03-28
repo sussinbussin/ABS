@@ -16,7 +16,6 @@ const item = computed(() => {
   <div class="flex flex-col h-screen p-5">
     <h1 class="font-bold text-xl text-left">Assets</h1>
 
-     
   </div>
 </template>
 

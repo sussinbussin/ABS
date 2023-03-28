@@ -30,6 +30,7 @@ const retrieveInventory = async () => {
 
   userStore.inventory = inventoryRes
 }
+
 //TODO: Retrieve inventory should it not exist
 onMounted(async () => {
   await retrieveInventory()
@@ -44,7 +45,7 @@ onMounted(async () => {
 })
 
 
-
+//get all columns, raw and formatted
 const allCols = computed(() => {
   return Object.keys(userStore.inventory[0])
     .map(item => {
@@ -54,7 +55,8 @@ const allCols = computed(() => {
       }
     })
 })
-//without id
+
+//cols but according to the checked cols.
 const formattedCols = computed(() => {
   return Object.keys(userStore.inventory[0])
     .filter(item => selectedCols.value[item])
@@ -124,9 +126,11 @@ const navigate = (id) => {
 
 <template>
   <div class="flex flex-row px-5">
-    <!-- <ACheckbox v-model="groupItems">Group Items</ACheckbox> -->
-    <ABtn variant="text" @click="showColsDialog = true">Edit Columns</ABtn>
-    <AInput v-model="search" placeholder="Search Name" type="text" class="text-sm" />
+    <ABtn @click="groupItems = !groupItems" variant="text" class="px-3">
+      <ACheckbox v-model="groupItems">Group Items</ACheckbox>
+    </ABtn>
+    <ABtn variant="text" @click="showColsDialog = true" class="px-3">Edit Columns</ABtn>
+    <AInput v-model="search" placeholder="Search Name" type="text" class="text-sm px-3" />
   </div>
   <div class="w-full p-3 max-h-700px overflow-y-scroll">
     <table class="relative w-full border-separate">

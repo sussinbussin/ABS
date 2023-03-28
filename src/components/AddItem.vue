@@ -53,8 +53,7 @@ const submit = async () => {
       <!-- <AInput v-model="qty" :error="qtyEmptyMsg" placeholder="qty" type="number" class-text-sm /> -->
       <div class="grid-row sm:grid-cols-3 place-items-stretch pb-3">
         <div v-for="item in formattedCols">
-          <AInput v-model="addedItem[item.raw]" :label="item.formatted" type="text" class-text-sm />
-
+          <AInput v-model="addedItem[item.raw]" :label="item.formatted" type="text" class="text-sm" />
         </div>
       </div>
       <ABtn class="w-full">Submit</ABtn>

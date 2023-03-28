@@ -16,6 +16,7 @@ declare module '@vue/runtime-core' {
     AddProductScreen: typeof import('./src/components/AddProductScreen.vue')['default']
     ADialog: typeof import('anu-vue')['ADialog']
     AInput: typeof import('anu-vue')['AInput']
+    ASelect: typeof import('anu-vue')['ASelect']
     EventScreen: typeof import('./src/components/EventScreen.vue')['default']
     InventoryCard: typeof import('./src/components/InventoryCard.vue')['default']
     InventoryTable: typeof import('./src/components/InventoryTable.vue')['default']

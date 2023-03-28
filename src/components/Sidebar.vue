@@ -2,20 +2,28 @@
 import { computed, onMounted, ref, watchEffect } from 'vue'
 import { useElementHover, useStorage } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
-import { useMotionVariants, useMotions } from '@vueuse/motion'
+import { useMotionVariants, useMotions, useSpring, useMotion } from '@vueuse/motion'
 import { useUserStore } from '~/stores/user'
 
 const sidebarRef = ref<HTMLElement>()
+const sidebarWidth = ref(250)
 const route = useRoute()
 const router = useRouter()
 
 const { user, cca } = useUserStore()
 
 // Pin logic
-const pinned = ref(true)
+const pinned = ref(false)
+
+const motionSidebar = useMotion(sidebarRef, {
+  initial: {
+    width: 250
+  }
+})
 
 const changePin = () => {
   pinned.value = !pinned.value
+  sidebarWidth.value = 50
 }
 
 const getPinnedVariant = computed(() => {
@@ -32,12 +40,16 @@ const navigateEvents = () => {
   router.push('/events')
 }
 
-const isHovered = useElementHover(sidebarRef)
+
+
+
+
 </script>
 
 <template>
   <div ref="sidebarRef" v-motion-slide-left
-    class="h-screen w-250px dark:bg-hex-0a0a0a shadow-inset flex flex-col align-items-stretch bg-noise border-right p-2">
+    class="h-screen dark:bg-hex-0a0a0a shadow-inset flex flex-col align-items-stretch bg-noise border-right p-2"
+    :class="{ width: motionSidebarWidth.value + 'px' }">
     <div class="flex flex-row h-15">
       <AAvatar :content="user?.name[0]" />
       <div class="text-left px-3">
