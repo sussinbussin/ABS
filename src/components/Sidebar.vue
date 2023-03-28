@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watchEffect } from 'vue'
-import { useElementHover, useStorage } from '@vueuse/core'
+import { useStorage } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
-import { useMotionVariants, useMotions, useSpring, useMotion } from '@vueuse/motion'
+import { useMotion } from '@vueuse/motion'
+import { useHover } from '@vueuse/gesture'
 import { useUserStore } from '~/stores/user'
 
 const sidebarRef = ref<HTMLElement>()
-const sidebarWidth = ref(250)
 const route = useRoute()
 const router = useRouter()
 
@@ -15,15 +15,41 @@ const { user, cca } = useUserStore()
 // Pin logic
 const pinned = ref(false)
 
-const motionSidebar = useMotion(sidebarRef, {
+
+const { variant, apply } = useMotion(sidebarRef, {
   initial: {
     width: 250
+  },
+  collasped: {
+    width: 65,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 250,
+      delay: 100
+    }
   }
 })
 
+useHover(({ hovering }) => {
+  if (pinned.value) {
+    variant.value = 'initial'
+    return
+  }
+  if (hovering) {
+    variant.value = 'initial'
+  } else {
+    variant.value = 'collasped'
+  }
+}, { domTarget: sidebarRef })
+
 const changePin = () => {
   pinned.value = !pinned.value
-  sidebarWidth.value = 50
+  if (pinned.value) {
+    variant.value = 'collasped'
+  } else {
+    variant.value = 'initial'
+  }
 }
 
 const getPinnedVariant = computed(() => {
@@ -44,11 +70,10 @@ const navigateEvents = () => {
 
 <template>
   <div ref="sidebarRef" v-motion-slide-left
-    class="h-screen dark:bg-hex-0a0a0a shadow-inset flex flex-col align-items-stretch bg-noise border-right p-2"
-    :class="{ width: motionSidebarWidth.value + 'px' }">
+    class="h-screen dark:bg-hex-0a0a0a shadow-inset flex flex-col align-items-stretch bg-noise border-right p-2">
     <div class="flex flex-row h-15">
       <AAvatar :content="user?.name[0]" />
-      <div class="text-left px-3">
+      <div class="text-left px-3" v-if="variant == 'initial'">
         <h1 class="font-bold my-auto">
           {{ user?.name }}
         </h1>
@@ -58,14 +83,15 @@ const navigateEvents = () => {
       </div>
     </div>
     <ABtn icon="i-bx-package" :variant="route.name === 'Inventory' ? 'fill' : 'light'" @click="navigateInventory">
-      Inventory
+      {{ variant == 'initial' ? 'Inventory' : '' }}
     </ABtn>
     <ABtn icon="i-bx-package" :variant="route.name === 'Events' ? 'fill' : 'light'" class="mt" @click="navigateEvents">
-      Events
+      {{ variant == 'initial' ? 'Events' : '' }}
     </ABtn>
     <div class="mt-auto flex flex-row">
       <ABtn icon-only icon="i-bx-cog" variant="light" />
-      <ABtn icon-only icon="i-bx-pin" class="ml-auto" :variant="getPinnedVariant" :onclick="changePin" />
+      <ABtn icon-only icon="i-bx-pin" class="ml-auto" :variant="getPinnedVariant" :onclick="changePin"
+        v-if="variant == 'initial'" />
     </div>
   </div>
 </template>
