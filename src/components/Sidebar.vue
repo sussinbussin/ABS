@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watchEffect } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useStorage } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { useMotion } from '@vueuse/motion'
@@ -31,6 +31,9 @@ const { variant, apply } = useMotion(sidebarRef, {
   }
 })
 
+onMounted(() => {
+  variant.value = pinned.value ? 'initial' : "collasped"
+})
 useHover(({ hovering }) => {
   if (pinned.value) {
     variant.value = 'initial'
