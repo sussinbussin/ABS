@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import { pbSymbol } from '~/symbols/injectionSymbols'
 import { useUserStore } from '~/stores/user'
 import { useRouter } from 'vue-router';
@@ -16,7 +16,9 @@ const editItem = ref({})
 const editId = ref("")
 
 //filter option refs
-const groupItems = ref(false)
+const groupedItem = ref("")
+const groupedTable = ref({})
+const groupedShow = reactive({})
 const selectedCols = ref({})
 const showColsDialog = ref(false)
 
@@ -87,11 +89,27 @@ const displayedTable = computed(() => {
   })
 })
 
-const groupedTable = computed(() => {
-  if (!groupItems.value) return
+const group = (name: string) => {
+  if (groupedItem.value === name) {
+    groupedItem.value = ""
+    return
+  }
+  groupedItem.value = name
+  let tempTable = {}
 
-})
+  for (let item of displayedTable.value) {
+    if (tempTable[item[name]] == undefined) {
+      tempTable[item[name]] = []
+      groupedShow[item[name]] = false
+    }
+    tempTable[item[name]].push(item)
+  }
+  groupedTable.value = tempTable
+}
 
+const handleGroupedClick = (item) => {
+  groupedShow[item] = !groupedShow[item]
+}
 //Crud operations
 const trash = (id: string) => {
   showDeleteDialog.value = true
@@ -129,22 +147,23 @@ const navigate = (id) => {
 
 <template>
   <div class="flex flex-row px-5">
-    <ABtn @click="groupItems = !groupItems" variant="text" class="px-3">
-      <ACheckbox v-model="groupItems">Group Items</ACheckbox>
-    </ABtn>
+    <AInput v-model="search" placeholder="Search" type="text" class="text-sm pr-3" />
     <ABtn variant="text" @click="showColsDialog = true" class="px-3">Edit Columns</ABtn>
-    <AInput v-model="search" placeholder="Search Name" type="text" class="text-sm px-3" />
   </div>
   <div class="w-full p-3 max-h-700px overflow-y-scroll">
     <table class="relative w-full border-separate">
       <thead class="sticky top-0 border-bottom">
         <tr>
-          <th v-for="item in formattedCols">{{ item.formatted }}</th>
+          <th v-for=" item in formattedCols">
+            <ABtn icon="i-bx-layer" :variant="item.raw == groupedItem ? 'outline' : 'text'" @click="group(item.raw)">
+              {{ item.formatted }}
+            </ABtn>
+          </th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody class="">
-        <tr v-for="item in displayedTable">
+        <tr v-for="item in displayedTable" v-if="groupedItem == ''">
           <td v-motion-pop v-for="row in formattedCols">
             {{ item[row.raw] }}
           </td>
@@ -153,6 +172,17 @@ const navigate = (id) => {
               @click="navigate(item.id)" />
             <ABtn class="text-xs" icon="i-bx-edit-alt" icon-only variant="text" color="default" @click="edit(item.id)" />
             <ABtn class="text-xs" icon="i-bx-trash" icon-only variant="text" color="default" @click="trash(item.id)" />
+          </td>
+        </tr>
+        <tr v-for="item in groupedTable" v-else>
+          <td v-motion-pop v-for="row in formattedCols">
+            <ABtn :variant="groupedShow[item[0][groupedItem]] ? 'outline' : 'text'" v-if="row.raw == groupedItem"
+              @click="handleGroupedClick(item[0][groupedItem])">
+              {{ item[0][groupedItem] }}
+            </ABtn>
+            <ABtn v-else class="invisible"></ABtn>
+            <br />
+            <p v-if="groupedShow[item[0][groupedItem]]" v-for="e in item" class="py-3">{{ e[row.raw] }}</p>
           </td>
         </tr>
       </tbody>
@@ -195,5 +225,23 @@ const navigate = (id) => {
 thead::after {
   position: absolute;
   border-bottom: 1px solid rgba(229, 231, 235, 0.5)
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #121212;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9A6BED;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A489D4;
 }
 </style>
