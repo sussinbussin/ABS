@@ -176,7 +176,8 @@ const navigate = (id) => {
         </tr>
         <tr v-for="item in groupedTable" v-else>
           <td v-motion-pop v-for="row in formattedCols">
-            <ABtn :variant="groupedShow[item[0][groupedItem]] ? 'outline' : 'text'" v-if="row.raw == groupedItem"
+            <ABtn :icon="groupedShow[item[0][groupedItem]] ? 'i-bx-chevron-up' : 'i-bx-chevron-down'"
+              :variant="groupedShow[item[0][groupedItem]] ? 'outline' : 'text'" v-if="row.raw == groupedItem"
               @click="handleGroupedClick(item[0][groupedItem])">
               {{ item[0][groupedItem] }}
             </ABtn>

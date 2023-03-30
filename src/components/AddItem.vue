@@ -15,26 +15,26 @@ const addedItem = ref({})
 
 const formattedCols = computed(() => {
   return Object.keys(userStore.inventory[0])
-    .filter(item => item !== "id" && item !== "expand")
-    .map(item => {
+    .filter(item => item !== 'id' && item !== 'expand')
+    .map((item) => {
       return {
         raw: item,
-        formatted: item.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+        formatted: item.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
       }
     })
 })
 
 // TODO: form validation
 const submit = async () => {
-  //TODO: add
+  // TODO: add
   const res = await pb?.collection('assets').create(addedItem.value)
 
   if (res?.code) {
-    //error
+    // error
     toast.open({
       type: 'error',
       message: res?.message,
-      position: 'bottom'
+      position: 'bottom',
     })
   }
   const inventoryRes = await pb?.collection('assets').getFullList(500, {
@@ -56,7 +56,9 @@ const submit = async () => {
           <AInput v-model="addedItem[item.raw]" :label="item.formatted" type="text" class="text-sm" />
         </div>
       </div>
-      <ABtn class="w-full">Submit</ABtn>
+      <ABtn class="w-full">
+        Submit
+      </ABtn>
     </form>
   </ACard>
 </template>

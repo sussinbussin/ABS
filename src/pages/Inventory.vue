@@ -7,7 +7,7 @@ const isListView = ref(true)
 
 const tableViews = ['Table View', 'Card View']
 
-//TODO: save preferences in pb
+// TODO: save preferences in pb
 const selectedView = ref('Table View')
 </script>
 
@@ -17,8 +17,7 @@ const selectedView = ref('Table View')
       <h1 class="font-bold text-xl p-5 text-left">
         My Inventory
       </h1>
-      <ASelect class="py-5 text-xs grow-0 ml-auto pr-8" v-model="selectedView" :options="tableViews" />
-
+      <ASelect v-model="selectedView" class="py-5 text-xs grow-0 ml-auto pr-8" :options="tableViews" />
     </div>
 
     <Suspense>
@@ -27,7 +26,9 @@ const selectedView = ref('Table View')
     </Suspense>
 
     <div class="flex flex-row p-3 mt-auto">
-      <ABtn icon='i-bx-plus' class="ml-auto mr-1" @click="showDialog = true">Add Item</ABtn>
+      <ABtn icon="i-bx-plus" class="ml-auto mr-1" @click="showDialog = true">
+        Add Item
+      </ABtn>
     </div>
 
     <ADialog v-model="showDialog">

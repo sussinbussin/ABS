@@ -35,14 +35,13 @@ const throwError = (type: string, message: string) => {
   })
 }
 
-
 const login = async () => {
   passwordErrMsg.value = ''
   usernameErrMsg.value = ''
   buttonText.value = 'Logging in...'
 
-  let error = false;
-  //form validation
+  let error = false
+  // form validation
   if (username.value === '') {
     usernameErrMsg.value = 'Username should not be empty'
     error = true
@@ -57,7 +56,6 @@ const login = async () => {
     buttonText.value = 'Login'
     return
   }
-
 
   try {
     const res = await pb?.collection('users').authWithPassword(username.value, password.value)
@@ -100,8 +98,8 @@ const login = async () => {
     username.value = ''
     password.value = ''
 
-    passwordErrMsg.value = "Invalid Password!"
-    usernameErrMsg.value = "Invalid Username!"
+    passwordErrMsg.value = 'Invalid Password!'
+    usernameErrMsg.value = 'Invalid Username!'
   }
 }
 </script>
@@ -109,10 +107,14 @@ const login = async () => {
 <template>
   <ACard v-motion-pop title="ABS" class="px-5 pb-6">
     <form class="grid-row place-items-stretch" @submit.prevent="login">
-      <AInput v-model="username" :error="usernameErrMsg" placeholder="Username" type="text" prepend-inner-icon="i-bx-user"
-        class="text-sm" />
-      <AInput v-model="password" :error="passwordErrMsg" placeholder="Password" type="password"
-        prepend-inner-icon="i-bx-lock" class="text-sm" />
+      <AInput
+        v-model="username" :error="usernameErrMsg" placeholder="Username" type="text" prepend-inner-icon="i-bx-user"
+        class="text-sm"
+      />
+      <AInput
+        v-model="password" :error="passwordErrMsg" placeholder="Password" type="password"
+        prepend-inner-icon="i-bx-lock" class="text-sm"
+      />
       <ABtn>{{ buttonText }}</ABtn>
     </form>
   </ACard>
