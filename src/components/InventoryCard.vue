@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { ref, inject, computed } from 'vue'
+import { computed, inject, ref } from 'vue'
 import imagePlaceHolder from '../assets/no-image-placeholder.png'
 import CardItem from './CardItem.vue'
 import { useUserStore } from '~/stores/user'
 import { pbSymbol } from '~/symbols/injectionSymbols'
-import { Dialog } from '@headlessui/vue'
-
 
 interface CategoryMap {
   [key: string]: { assets: Array<string>; color: string }
@@ -18,15 +16,13 @@ const cardsRef = ref<HTMLElement>()
 const normalDisplay = ref('')
 const search = ref('')
 const cardItem = ref(false)
-const childDetails = ref<{ itemName: string, items: Object }>({
+const childDetails = ref<{ itemName: string; items: Object }>({
   itemName: '',
-  items: []
-});
+  items: [],
+})
 const categoryColors = ['red', 'green', 'blue', 'orange', 'yellow']
 
 const inventory = computed(() => userStore.inventory)
-
-
 
 // Group assets into same name
 const inventoryGroup = inventory.value.reduce((acc, item) => {
@@ -89,7 +85,7 @@ const assetsDisplay = (index: string) => {
 }
 
 const handleClick = (itemName: string, item: Object) => {
-  cardItem.value = true;
+  cardItem.value = true
   // set child details here
   childDetails.value.itemName = itemName
   childDetails.value.items = item
@@ -101,27 +97,23 @@ const setCardClose = () => {
 </script>
 
 <template>
-  <div class="z-1">
-    <Dialog :open="cardItem" @close="setCardClose" class="fixed h-full w-full top-25% left-25% z-2" >
-      <div class="fixed inset-0 bg-black/50"/>
-      <div class="absolute w-50% h-50% rounded-lg bg-black p-2 pb-15">
-        <div class="text-white font-extrabold text-8 px-4">{{ childDetails.itemName }}</div>
-        <div class="w-full h-85%  overflow-y-scroll">
-          <CardItem :itemName="childDetails.itemName" :items="childDetails.items" @closeCardItem="setCardClose"/>
-        </div>       
-      </div>
-    </Dialog>
-
+  <div>
     <AInput v-model="search" placeholder="Search Name" type="text" class="text-sm mx-2" />
     <div class="w-full max-h-600px overflow-y-scroll overflow-x-hidden">
-      <div ref="cardsRef" v-motion-slide-right
-        class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        <div v-for="(items, index) in displayedCards" :key="index"
+      <div
+        ref="cardsRef" v-motion-slide-right
+        class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+      >
+        <div
+          v-for="(items, index) in displayedCards" :key="index"
           class="flex flex-col border border-transparent rounded-lg bg-#2c2c2c mx-2 my-5 hover:bg-#5f5f5f hover:scale-103% transition-transform duration-300"
-          @click="handleClick(index, items)" @mouseenter="assetsDisplay(index)" @mouseleave="assetsDisplay('')">
+          @click="handleClick(index, items)" @mouseenter="assetsDisplay(index)" @mouseleave="assetsDisplay('')"
+        >
           <div class="h-270px relative overflow-hidden">
-            <div :class="normalDisplay === index ? 'translate-y-0' : 'translate-y-full'"
-              class="h-full absolute top-0 left-0 w-full transition-all duration-300">
+            <div
+              :class="normalDisplay === index ? 'translate-y-0' : 'translate-y-full'"
+              class="h-full absolute top-0 left-0 w-full transition-all duration-300"
+            >
               <div class="h-95% my-1 overflow-y-scroll ">
                 <div v-for="e in items" :key="e" class="flex flex-row justify-between mx-2 text-3">
                   <div>
@@ -134,11 +126,15 @@ const setCardClose = () => {
               </div>
             </div>
 
-            <div :class="normalDisplay !== index ? 'translate-y-0' : '-translate-y-full'"
-              class="flex flex-col justify-evenly h-full pb-2 absolute top-0 left-0 w-full transition-all duration-300">
+            <div
+              :class="normalDisplay !== index ? 'translate-y-0' : '-translate-y-full'"
+              class="flex flex-col justify-evenly h-full pb-2 absolute top-0 left-0 w-full transition-all duration-300"
+            >
               <div class="border border-gray-7 rounded-lg h-70% mb-1 flex justify-center ">
-                <img :src="getImageUrl(items) ? getImageUrl(items) : imagePlaceHolder" alt="Image"
-                  class="max-w-100% max-h-100% object-contain rounded-lg">
+                <img
+                  :src="getImageUrl(items) ? getImageUrl(items) : imagePlaceHolder" alt="Image"
+                  class="max-w-100% max-h-100% object-contain rounded-lg"
+                >
               </div>
 
               <div class="mx-2 text-justify">
@@ -159,8 +155,18 @@ const setCardClose = () => {
         </div>
       </div>
     </div>
-
   </div>
+
+  <ADialog v-model="cardItem" class="w-[800px] h-450px p-3" @close="setCardClose">
+    <div class="">
+      <h1 class="text-white font-extrabold text-8 px-4">
+        {{ childDetails.itemName }}
+      </h1>
+      <div>
+        <CardItem :item-name="childDetails.itemName" :items="childDetails.items" @closeCardItem="setCardClose" />
+      </div>
+    </div>
+  </ADialog>
 </template>
 
 <style scoped>
