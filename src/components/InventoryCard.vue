@@ -103,10 +103,10 @@ const setCardClose = () => {
 
 <template>
   <div class="z-1">
-    <Dialog :open="cardItem" @close="setCardClose" class="fixed h-full w-full top-25% left-30% z-2" >
+    <Dialog :open="cardItem" @close="setCardClose" class="fixed h-full w-full top-25% left-25% z-2" >
       <div class="fixed inset-0 bg-black/50"/>
-      <div class="absolute w-40% h-50% rounded-lg bg-black p-2 pb-10">
-        <div class="text-white font-bold text-6 px-2">{{ childDetails.itemName }}</div>
+      <div class="absolute w-50% h-50% rounded-lg bg-black p-2 pb-15">
+        <div class="text-white font-extrabold text-8 px-4">{{ childDetails.itemName }}</div>
         <div class="w-full h-85%  overflow-y-scroll">
           <CardItem :itemName="childDetails.itemName" :items="childDetails.items" @closeCardItem="setCardClose"/>
         </div>       
