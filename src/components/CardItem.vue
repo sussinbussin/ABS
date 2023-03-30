@@ -2,8 +2,10 @@
 import { ref } from 'vue'
 import { pbSymbol } from '~/symbols/injectionSymbols'
 import { useToast } from 'vue-toast-notification'
+import { useRouter } from 'vue-router'
 
 const pb = inject(pbSymbol)
+const router = useRouter()
 
 const props = defineProps<{ itemName: string, items: Object }>();
 const itemArr = Object.values(props.items)
@@ -22,6 +24,10 @@ const updateCondition = (index: number, condition: string) => {
 
 const updateLoanStatus = (index: number, loanStatus: string) => {
   selectedLoanStatus.value[index] = loanStatus
+}
+
+const navigate = (id: string) => {
+  router.push('/assets/' + id)
 }
 
 const updateItems = () => {
@@ -64,18 +70,26 @@ const onConfirm = () => {
 <template>
   <div>
     <div>
-      <div class="grid grid-cols-4 justify-between text-gray-4 font-semibold">
+      <div class="grid grid-cols-4 justify-between text-gray-4 font-semibold"
+        style="grid-template-columns: 1.5fr 1fr 0.75fr 1.5fr;">
         <div class="px-4">Asset Tag</div>
         <div class="px-4">Location</div>
         <div class="px-5">Condition</div>
         <div class="px-5">Loan Status</div>
       </div>
       <div v-for="(e, index) in itemArr" :key="e.asset_tag">
-        <div class="grid grid-cols-4 justify-between">
-          <div class="flex items-center border border-gray-7 rounded-lg m-2 p-2 bg-gray-8 opacity-50">{{ e.asset_tag }}
+        <div class="grid grid-cols-4 justify-between" style="grid-template-columns: 1.5fr 1fr 0.75fr 1.5fr;">
+          <div class="flex items-center justify-between border border-gray-7 rounded-lg m-2 p-2 bg-gray-8 opacity-50">
+            <div>{{ e.asset_tag }}</div>
+            <div>
+              <ABtn class="text-xs" icon="i-bx-link-external" icon-only color="default" variant="text"
+                @click="navigate(e.id)" />
+            </div>
+
           </div>
-          <div class="flex items-center border border-gray-7 rounded-lg m-2 p-2 bg-gray-8 opacity-50">{{
-            e.location_of_asset }}
+          <div class="flex items-center border border-gray-7 rounded-lg m-2 p-2 bg-gray-8 opacity-50"
+            style="grid-column: span 1 / span 2;">
+            {{ e.location_of_asset || '-' }}
           </div>
           <select @change="updateCondition(index, $event.target.value)"
             class="bg-black flex items-center border border-gray-8 rounded-lg m-2 p-2">

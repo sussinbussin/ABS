@@ -67,7 +67,6 @@ const category: CategoryMap = Object.keys(inventoryGroup).reduce((acc, key, inde
 // Get image for each group
 const getImageUrl = (items: Array<Record>) => {
   const item = ref()
-  // console.log(typeof items)
   items.forEach((e: Object) => {
     if (e.image !== '') {
       item.value = e
