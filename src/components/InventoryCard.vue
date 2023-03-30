@@ -105,16 +105,11 @@ const setCardClose = () => {
   <div class="z-1">
     <Dialog :open="cardItem" @close="setCardClose" class="fixed h-full w-full top-25% left-30% z-2" >
       <div class="fixed inset-0 bg-black/50"/>
-      <div class="absolute w-40% h-50% rounded-lg bg-black p-2 pb-7">
-        <div class="text-white font-bold text-6">{{ childDetails.itemName }}</div>
-        <div class="w-full h-80% overflow-y-scroll my-2">
-          <CardItem :itemName="childDetails.itemName" :items="childDetails.items"/>
-        </div>
-        <div class="flex flex-row justify-between">
-          <ABtn @click="setCardClose" class="w-48%">Cancel</ABtn>
-          <ABtn @click="setCardClose" class="w-48%" color="warning" variant="light">Confirm</ABtn>
-        </div>
-       
+      <div class="absolute w-40% h-50% rounded-lg bg-black p-2 pb-10">
+        <div class="text-white font-bold text-6 px-2">{{ childDetails.itemName }}</div>
+        <div class="w-full h-85%  overflow-y-scroll">
+          <CardItem :itemName="childDetails.itemName" :items="childDetails.items" @closeCardItem="setCardClose"/>
+        </div>       
       </div>
     </Dialog>
 
