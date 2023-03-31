@@ -11,16 +11,23 @@
     "up": "taze major -I"
   },
   "dependencies": {
+    "@anu-vue/preset-theme-default": "^0.12.0",
     "@vueuse/core": "^9.11.0",
-    "onu-ui": "1.0.13-beta.1",
+    "@vueuse/gesture": "2.0.0-beta.1",
+    "@vueuse/motion": "2.0.0-beta.12",
+    "anu-vue": "^0.12.0",
+    "pinia": "^2.0.32",
+    "pocketbase": "^0.12.0",
     "vue": "^3.2.45",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "vue-toast-notification": "^3.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.1",
+    "@iconify-json/bx": "^1.1.6",
     "@iconify-json/carbon": "^1.1.13",
     "@types/node": "^18.11.18",
-    "@unocss/reset": "^0.48.4",
+    "@unocss/reset": "^0.41.2",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue-macros/volar": "^0.5.15",
     "@vue/test-utils": "^2.2.7",
